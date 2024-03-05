@@ -143,7 +143,7 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 ```myAppVariable.getOwnedGames('76561197960435530', true, true);```
 
-# getRecentlyPlayedGames
+### getRecentlyPlayedGames
 
 **Description**: Returns a list of games played by a specified user within the last two weeks, if the profile is set to Public visibility.
 
