@@ -27,8 +27,8 @@ Don't forget to include your .env file in your .gitignore file!
 
 Instantiate the library with the *new* keyword:
 
-```import CallSteamAPI from "./SteamWebAPILibrary.js";
-const mySpecialVariable = new CallSteamAPI();```
+```import CallSteamAPI from "./SteamWebAPILibrary.js";```
+```const mySpecialVariable = new CallSteamAPI();```
 
 ## Usage
 
