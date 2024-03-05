@@ -1,5 +1,6 @@
 *.env
 .env
 testLibrary.js
-node_modules
+**/node_modules
 .gitignore
+dsff
