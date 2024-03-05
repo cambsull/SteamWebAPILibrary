@@ -29,17 +29,32 @@ Instantiate the library with the *new* keyword:
 
 ```import CallSteamAPI from "./SteamWebAPILibrary.js";```
 
-```const mySpecialVariable = new CallSteamAPI();```
+```const myAppVariable = new CallSteamAPI();```
 
 ## Usage
 
 Call the libary object with your desired method and provide the required arguments:
 
-```mySpecialVariable.getPlayerSummaries('76561197960435530');```
+```myAppVariable.getPlayerSummaries('76561197960435530');```
 
 By default, the returned data is logged to the console.
 
 ## Methods
 
-Steam Web API Library has a method for each available Steam Web API Method.
+Steam Web API Library has a method for each available Steam Web API Method. The method names are identical to the [official Steam Web API documentation](https://developer.valvesoftware.com/wiki/Steam_Web_API). This section describes how to use each method within the context of the Steam Web API Library. The methods are presented in the same order as the official Steam Web API Library (as of the time of this writing).
 
+### getNewsForApp
+
+Description: The getNewsForApp method returns the latest news for a game, specified by its appID.
+
+Arguments:
+
+* appid : The appID of the game for which you want to retrieve news, as a string.
+
+* count (optional) : The number of items to return, as a string or integer.
+
+* maxlength (optional) : The maximum length of each entry in characters, as a string or integer.
+
+Example:
+
+```myAppVariable.getNewsForApp('440', 5, 500) // Returns five news data entries for App ID 440 with up to 500 characters each.```
