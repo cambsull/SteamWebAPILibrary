@@ -31,11 +31,21 @@ Instantiate the library with the *new* keyword:
 
 ## Usage
 
-Call the libary object with your desired method and provide the required arguments:
+Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
 
-```myAppVariable.getPlayerSummaries('76561197960435530');```
+```
+const myAppVariable = new CallSteamAPI();
 
-By default, the returned data is logged to the console.
+async function myFunction() {
+        const result = await myAppVariable.getNewsForApp('440')
+        console.log(result)
+}
+
+myFunc()
+
+```
+
+This example passes the result into a console.log(), but you can use the returned data in other ways as you see fit.
 
 ## Methods
 
