@@ -41,7 +41,7 @@ async function myFunction() {
         console.log(result)
 }
 
-myFunc()
+myFunction()
 
 ```
 
