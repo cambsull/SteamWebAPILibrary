@@ -1,8 +1,5 @@
-*.env
 .env
 testLibrary.js
 **/node_modules
-.gitignore
 node
 package-lock.json
-package.json

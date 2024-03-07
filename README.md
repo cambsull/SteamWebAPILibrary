@@ -9,25 +9,17 @@ need to look up by doing that part for you. All you need to do is import the lib
 
 Steam Web API Library is easy to install and use:
 
-1. Install *dotenv* and *process* with your package manager.
+1. Clone the repository and run npm install:
 
-```npm install process && npm install dotenv```
+```git clone https://github.com/cambsull/SteamWebAPILibrary.git && npm install```
 
-2. Ensure that you have your Steam Web API key in a .env file in the root directory of your project. You must name your environment variable 'STEAM_KEY':
+2. Ensure that you have your Steam Web API key in a .env file in the root directory of your project. Refer to *example.env* for naming requirements:
 
 ```STEAM_KEY=XXXXXXXXXXXXXXXXXXXXXXX```
 
-Don't forget to include your .env file in your .gitignore file!
-
-3. Import Steam Web API Library into your project. The default export for the libary is "CallSteamAPI":
+3. Import Steam Web API Library into your project.:
 
 ```import CallSteamAPI from "./SteamWebAPILibrary.js";```
-
-## Instantiation
-
-Instantiate the library with the *new* keyword:
-
-```const myAppVariable = new CallSteamAPI();```
 
 ## Usage
 
@@ -38,14 +30,13 @@ const myAppVariable = new CallSteamAPI();
 
 async function myFunction() {
         const result = await myAppVariable.getNewsForApp('440')
-        console.log(result)
+        
+        //Do something with the result
 }
 
 myFunction()
 
 ```
-
-This example passes the result into a console.log(), but you can use the returned data in other ways as you see fit.
 
 ## Methods
 
