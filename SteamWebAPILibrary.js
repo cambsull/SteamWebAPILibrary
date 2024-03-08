@@ -14,6 +14,7 @@ class CallSteamAPI {
             return data.appnews.newsitems;
         } catch (error) {
             console.error('The server returned an error: ', error);
+            return null;
         }
     }
     async getGlobalAchievementPercentagesForApp(gameid) {
@@ -24,6 +25,7 @@ class CallSteamAPI {
             return data.achievementpercentages.achievements;
         } catch (error) {
             console.error('The server returned an error: ', error)
+            return null;
         }
     }
     async getPlayerSummaries(steamids) {
@@ -34,6 +36,7 @@ class CallSteamAPI {
             return data.response.players;
         } catch (error) {
             console.error('The server returned an error: ', error)
+            return null;
         }
     }
     async getFriendList(steamid, relationship = `friend`) {
@@ -44,6 +47,7 @@ class CallSteamAPI {
             return data.friendslist.friends;
         } catch (error) {
             console.error('The server returned an error: ', error)
+            return null;
         }
     }
     async getPlayerAchievements(steamid, appid) {
@@ -54,6 +58,7 @@ class CallSteamAPI {
             return data.playerstats;
         } catch (error) {
             console.error('The server returned an error: ', error)
+            return null;
         }
     }
     async getUserStatsForGame(steamid, appid) {
@@ -64,6 +69,7 @@ class CallSteamAPI {
             return data.playerstats;
         } catch (error) {
             console.error('The server returned an error: ', error)
+            return null;
         }
     }
     async getOwnedGames(steamid, includeAppinfo = false, includePlayedFreeGames = false) {
@@ -76,6 +82,7 @@ class CallSteamAPI {
             return data.response.games;
         } catch (error) {
             console.error('The server returned an error: ', error)
+            return null;
         }
     }
     async getRecentlyPlayedGames(steamid, count = null) {
@@ -87,6 +94,7 @@ class CallSteamAPI {
             return data.response;
         } catch (error) {
             console.error('The server returned an error: ', error)
+            return null;
         }
     }
 }
