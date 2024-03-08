@@ -17,8 +17,7 @@ Steam Web API Library is easy to install and use:
  "dependencies": {
     "dotenv": "^16.4.5",
     "process": "^0.11.10"
-  },
-  "type": "module"
+  }
 ```
 
 3. Run ```npm install``` in your project root directory.
