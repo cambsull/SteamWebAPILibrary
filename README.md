@@ -11,7 +11,7 @@ Steam Web API Library is easy to install and use:
 
 1. Add SteamWebAPILibrary.js to your project directory.
 
-2. Update your package.json file to include the following
+2. Add these dependencies to your package.json file:
 
 ```
  "dependencies": {
