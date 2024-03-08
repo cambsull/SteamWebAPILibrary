@@ -9,15 +9,25 @@ need to look up by doing that part for you. All you need to do is import the lib
 
 Steam Web API Library is easy to install and use:
 
-1. Clone the repository and run npm install:
+1. Add SteamWebAPILibrary.js to your project directory.
 
-```git clone https://github.com/cambsull/SteamWebAPILibrary.git && npm install```
+2. Update your package.json file to include the following
 
-2. Ensure that you have your Steam Web API key in a .env file in the root directory of your project. Refer to *example.env* for naming requirements:
+```
+ "dependencies": {
+    "dotenv": "^16.4.5",
+    "process": "^0.11.10"
+  },
+  "type": "module"
+```
+
+3. Run ```npm install``` in your project root directory.
+
+4. Ensure that you have your Steam Web API key in a .env file in the root directory of your project. Refer to *example.env* for naming requirements:
 
 ```STEAM_KEY=XXXXXXXXXXXXXXXXXXXXXXX```
 
-3. Import Steam Web API Library into your project.:
+5. Import Steam Web API Library into your project:
 
 ```import CallSteamAPI from "./SteamWebAPILibrary.js";```
 
