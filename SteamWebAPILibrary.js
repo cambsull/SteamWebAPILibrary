@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import process from 'process';
 
 class CallSteamAPI {
     static #baseURL = `http://api.steampowered.com`;
