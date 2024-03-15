@@ -10,7 +10,7 @@ Enhancements, features, and known issues are available in the [Issues](https://g
 
 Steam Web API Library is a JavaScript library that makes it easier to query data from the Steam Web API. The library reduces the amount of tedious API endpoint information you need to look up by doing that part for you. All you need to do is import the library, instantiate it via the *new* keyword, and follow the usage guide below! The library returns data as a JSON object.
 
-## 1.0 Quickstart Guide
+## 1.0 | Quickstart Guide
 
 Steam Web API Library is easy to install and use:
 
@@ -35,10 +35,10 @@ Steam Web API Library is easy to install and use:
 
 ```import CallSteamAPI from "./SteamWebAPILibrary.js";```
 
-## 2.0 Usage
+## 2.0 | Usage
 
 
-### 2.1 Option one (recommended) -- passing arguments as a destructured object
+### 2.1 | Option one (recommended) -- passing arguments as a destructured object
 
 Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
 
@@ -88,7 +88,7 @@ myFunc({
 // Returns up to the default 3 articles of news, each up to the default 300 characters, for the selected appid, 440.
 ```
 
-### 2.2 Option two -- passing arguments directly
+### 2.2 | Option two -- passing arguments directly
 
 Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
 
@@ -113,7 +113,7 @@ myFunc()
 
 
 
-## 3.0 Parameter Definitions
+## 3.0 | Parameter Definitions
 
 |     **Parameter name**    |   **Valid types**  |                          **Valid arguments**                         |                                    **Notes**                                    |
 |:-------------------------:|:------------------:|:--------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
@@ -130,13 +130,13 @@ myFunc()
 |        relationship       |       String       |                              all, friend                             |                         Not sure what this actually does                        |
 |          steamid          |       String       |                                64-bit                                |                             Steam Player Profile ID                             |
 
-## 4.0 Expected Return Values, Per Method
+## 4.0 | Expected Return Values, Per Method
 
 Below are the expected server responses for each available argument, per method.
 
 "Code" refers to the HTTPS response from the Steam Web API server(s).
 
-### 4.1 getNewsForApp
+### 4.1 | getNewsForApp
 
 |         **Argument**         |                 **Returns**                 | **Code** |
 |:----------------------------:|:-------------------------------------------:|:--------:|
@@ -154,7 +154,7 @@ Below are the expected server responses for each available argument, per method.
 | maxlength, blank/unspecified | json, xml, vdf object (maximum char length) |    200   |
 
 
-### 4.2 getGlobalAchievementPercentagesForApp
+### 4.2 | getGlobalAchievementPercentagesForApp
 
 |        **Argument**       |      **Returns**      | **Code** |
 |:-------------------------:|:---------------------:|:--------:|
@@ -166,7 +166,7 @@ Below are the expected server responses for each available argument, per method.
 | gameid, blank/unspecified |      Bad request      |    400   |
 
 
-### 4.3 getPlayerSummaries
+### 4.3 | getPlayerSummaries
 
 |         **Argument**        |           **Returns**           | **Code** |
 |:---------------------------:|:-------------------------------:|:--------:|
@@ -180,7 +180,7 @@ Below are the expected server responses for each available argument, per method.
 |      steamids, illegal      | Object with empty players array |    200   |
 | steamids, blank/unspecified |           Bad request           |    400   |
 
-### 4.4 getFriendList
+### 4.4 | getFriendList
 
 |           **Argument**          |      **Returns**      | **Code** |
 |:-------------------------------:|:---------------------:|:--------:|
@@ -197,7 +197,7 @@ Below are the expected server responses for each available argument, per method.
 |         steamid, illegal        | Internal Server Error |    500   |
 |    steamid, blank/unspecified   |      Bad request      |    400   |
 
-### 4.5 getPlayerAchievements
+### 4.5 | getPlayerAchievements
 
 |        **Argument**        |            **Returns**           | **Code** |
 |:--------------------------:|:--------------------------------:|:--------:|
@@ -214,7 +214,7 @@ Below are the expected server responses for each available argument, per method.
 |      steamid, illegal      |       Internal Server Error      |    500   |
 | steamid, blank/unspecified |            Bad request           |    400   |
 
-### 4.6 getUserStatsForGames
+### 4.6 | getUserStatsForGames
 
 |        **Argument**        |            **Returns**           | **Code** |
 |:--------------------------:|:--------------------------------:|:--------:|
@@ -231,7 +231,7 @@ Below are the expected server responses for each available argument, per method.
 |      steamid, illegal      |       Internal Server Error      |    500   |
 | steamid, blank/unspecified |            Bad request           |    400   |
 
-### 4.7 getOwnedGames
+### 4.7 | getOwnedGames
 
 |                 **Argument**                 |            **Returns**           | **Code** |
 |:--------------------------------------------:|:--------------------------------:|:--------:|
@@ -249,7 +249,7 @@ Below are the expected server responses for each available argument, per method.
 |               steamid, illegal               |       Internal Server Error      |    500   |
 |          steamid, blank/unspecified          |            Bad request           |    400   |
 
-### 4.8 getRecentlyPlayedGames
+### 4.8 | getRecentlyPlayedGames
 
 |        **Argument**        |       **Returns**      | **Code** |
 |:--------------------------:|:----------------------:|:--------:|
@@ -266,11 +266,11 @@ Below are the expected server responses for each available argument, per method.
 |      steamid, illegal      |  Internal Server Error |    500   |
 | steamid, blank/unspecified |       Bad request      |    400   |
 
-## 5.0 Methods
+## 5.0 | Methods
 
 Steam Web API Library has a method for each available Steam Web API Method. The method names are identical to the [official Steam Web API documentation](https://developer.valvesoftware.com/wiki/Steam_Web_API). This section describes how to use each method within the context of the Steam Web API Library. The methods are presented in the same order as the official Steam Web API Library (as of the time of this writing).
 
-### 5.1 getNewsForApp
+### 5.1 | getNewsForApp
 
 **Description**: Returns the latest news for a game, specified by its appID.
 
@@ -286,7 +286,7 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 ```myAppVariable.getNewsForApp('440', 5, 500)```
 
- ### 5.2 getGlobalAchievementPercentagesForApp
+ ### 5.2 | getGlobalAchievementPercentagesForApp
 
  **Description**: Returns global achievements for the specific game in percentages.
 
@@ -298,7 +298,7 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
  ```myAppVariable.getGlobalAchievementPercentagesForApp('440');```
 
- ### 5.3 getPlayerSummaries 
+ ### 5.3 | getPlayerSummaries 
 
  **Description**: Returns profile information for a list of Steam Player IDs. The profiles must have Public visibility to be retrieved successfully.
 
@@ -310,7 +310,7 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
  ```myAppVariable.getPlayerSummaries('76561197960435530, 76561197960435531, 76561197960435532, 76561197960435533');```
  
- ### 5.4 getFriendList
+ ### 5.4 | getFriendList
 
  **Description**: Returns the friend list of a specified Steam user. The profile must have Public visibility to be retrieved successfully.
 
@@ -326,7 +326,7 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
  (Note: this particular example uses the profile ID found in the official documentation, which is current set to private.)
 
-### 5.5 getPlayerAchievements
+### 5.5 | getPlayerAchievements
 
 **Description**: Returns a list of achievements for a particular user, for a specific app ID.
 
@@ -340,7 +340,7 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 ```myAppVariable.getPlayerAchievements('76561197960435530', '440');```
 
-### 5.6 getUserStatsForGame
+### 5.6 | getUserStatsForGame
 
 **Description**: Returns a list of information and achievements for a particular user, for a specific app ID.
 
@@ -354,7 +354,7 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 ```myAppVariable.getUserStatsForGame('76561197960435530', '440')```
 
-### 5.7 getOwnedGames
+### 5.7 | getOwnedGames
 
 **Description**: Returns a list of owned games for a particular user, if the user's profile is set to Public visibility.
 
@@ -370,7 +370,7 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 ```myAppVariable.getOwnedGames('76561197960435530', true, true);```
 
-### 5.8 getRecentlyPlayedGames
+### 5.8 | getRecentlyPlayedGames
 
 **Description**: Returns a list of games played by a specified user within the last two weeks, if the profile is set to Public visibility.
 
