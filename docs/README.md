@@ -1,6 +1,6 @@
 # Steam Web API Library
 
-# Version
+## Version
 
 Steam Web API Library is currently in version 0.1.0 per the [Semantic Versioning standards](https://semver.org).
 
