@@ -6,11 +6,11 @@ Steam Web API Library is currently in version 0.1.0 per the [Semantic Versioning
 
 Enhancements, features, and known issues are available in the [Issues](https://github.com/cambsull/SteamWebAPILibrary/issues) and [Projects](https://github.com/users/cambsull/projects/3) section of this respository.
 
-## 1.0 Overview
+## Overview
 
 Steam Web API Library is a JavaScript library that makes it easier to query data from the Steam Web API. The library reduces the amount of tedious API endpoint information you need to look up by doing that part for you. All you need to do is import the library, instantiate it via the *new* keyword, and follow the usage guide below! The library returns data as a JSON object.
 
-## Getting Steam Web API Library ready
+## 1.0 Quickstart Guide
 
 Steam Web API Library is easy to install and use:
 
@@ -52,7 +52,7 @@ myFunction()
 
 ```
 
-## 3.0 Parameter definitions
+## 3.0 Parameter Definitions
 
 |     **Parameter name**    |   **Valid types**  |                          **Valid arguments**                         |                                    **Notes**                                    |
 |:-------------------------:|:------------------:|:--------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
@@ -69,7 +69,7 @@ myFunction()
 |        relationship       |       String       |                              all, friend                             |                         Not sure what this actually does                        |
 |          steamid          |       String       |                                64-bit                                |                             Steam Player Profile ID                             |
 
-## 4.0 Expected return values, per method
+## 4.0 Expected Return Values, Per Method
 
 Below are the expected server responses for each available argument, per method.
 
@@ -204,10 +204,6 @@ Below are the expected server responses for each available argument, per method.
 |       steamid, legal       |  json, xml, vdf object |    200   |
 |      steamid, illegal      |  Internal Server Error |    500   |
 | steamid, blank/unspecified |       Bad request      |    400   |
-
-
-
-
 
 ## 5.0 Methods
 
