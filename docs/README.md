@@ -37,9 +37,66 @@ Steam Web API Library is easy to install and use:
 
 ## 2.0 Usage
 
+
+### 2.1 Option one (reommended) -- passing arguments as a destructured object
+
 Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
 
+When using this method, you may place your arguments in any order you wish in your destructured object, and it will be easier to see which arguments are being passed.
+
+```js
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({appid, count, maxlength}) {
+
+    const myAppId = appid;
+    const myCount = count;
+    const myMaxLength = maxlength;
+
+    const result = await myAppVariable.getNewsForApp(myAppId, myCount, myMaxLength);
+    //Do something with the result
+}
+
+myFunc({
+    count: '5',
+    maxlength: '500',
+    appid: '440',
+});
+
+// Returns 5 articles of news for the selected appid, 440.
 ```
+
+Parameters that have a default value will maintain their default value whether or not they are included in your destructured object.
+
+```js
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({appid, count, maxlength}) {
+
+    const myAppId = appid;
+    const myCount = count;
+    const myMaxLength = maxlength;
+
+    const result = await myAppVariable.getNewsForApp(myAppId, myCount, myMaxLength);
+    //Do something with the result
+}
+
+myFunc({
+    appid: '440',
+});
+
+// Returns 3 articles of news that are each up to 300 characters long for the selected appid, 440.
+```
+
+### 2.2 Option two -- passing arguments directly
+
+Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
+
+This has the disadvantage of being less clear which arguments you are passing for which parameters, and you must maintain the same order of arguments as defined by the
+methods.
+
+```js
+
 const myAppVariable = new CallSteamAPI();
 
 async function myFunction() {
@@ -51,6 +108,8 @@ async function myFunction() {
 myFunction()
 
 ```
+
+
 
 ## 3.0 Parameter Definitions
 

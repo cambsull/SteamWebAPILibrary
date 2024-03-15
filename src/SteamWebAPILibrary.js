@@ -2,7 +2,23 @@ import 'dotenv/config';
 
 class CallSteamAPI {
     static #baseURL = `http://api.steampowered.com`;
-    static #key = process.env.STEAM_KEY;
+
+    constructor() {
+        this.key = process.env.STEAM_KEY;
+        try {
+            const key = this.key;
+            if (!key) {
+                throw new Error('A Steam Web API key was not found.');
+            }
+            const keyRegex = /^[a-zA-Z0-9]{32}$/;
+            if (!keyRegex.test(key)) {
+                throw new Error('The Steam Web API key provided is invalid. It must be a 32-character alphanumeric string with no special characters.')
+            }
+        } catch (error) {
+            console.error(`There was a problem instantiating the Steam Web API Library object: \n\n${error}\n`);
+            return null;
+        }
+    }
 
     async getNewsForApp(appid, count = 3, maxlength = 300) {
         const url = `${CallSteamAPI.#baseURL}/ISteamNews/GetNewsForApp/v0002/?appid=${appid}&count=${count}&maxlength=${maxlength}&format=json`;
@@ -27,7 +43,7 @@ class CallSteamAPI {
         }
     }
     async getPlayerSummaries(steamids) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetPlayerSummaries/v0002/?key=${CallSteamAPI.#key}&steamids=${steamids}`;
+        const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetPlayerSummaries/v0002/?key=${this.key}&steamids=${steamids}`;
         try {
             const response = await fetch(url);
             const data = await response.json();
@@ -38,7 +54,7 @@ class CallSteamAPI {
         }
     }
     async getFriendList(steamid, relationship = `friend`) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetFriendList/v0001/?key=${CallSteamAPI.#key}&steamid=${steamid}&relationship=${relationship}&format=json`;
+        const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetFriendList/v0001/?key=${this.key}&steamid=${steamid}&relationship=${relationship}&format=json`;
         try {
             const response = await fetch(url);
             const data = await response.json();
@@ -49,7 +65,7 @@ class CallSteamAPI {
         }
     }
     async getPlayerAchievements(steamid, appid) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${appid}&key=${CallSteamAPI.#key}&steamid=${steamid}`;
+        const url = `${CallSteamAPI.#baseURL}/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${appid}&key=${this.key}&steamid=${steamid}`;
         try {
             const response = await fetch(url);
             const data = await response.json();
@@ -60,7 +76,7 @@ class CallSteamAPI {
         }
     }
     async getUserStatsForGame(steamid, appid) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUserStats/GetUserStatsForGame/v0002/?appid=${appid}&key=${CallSteamAPI.#key}&steamid=${steamid}`;
+        const url = `${CallSteamAPI.#baseURL}/ISteamUserStats/GetUserStatsForGame/v0002/?appid=${appid}&key=${this.key}&steamid=${steamid}`;
         try {
             const response = await fetch(url);
             const data = await response.json();
@@ -73,7 +89,7 @@ class CallSteamAPI {
     async getOwnedGames(steamid, includeAppinfo = false, includePlayedFreeGames = false) {
         const includeAppInfoParam = includeAppinfo ? `&include_appinfo=true` : '';
         const includePlayedFreeGamesParam = includePlayedFreeGames ? `&include_played_free_games=true` : '';
-        const url = `${CallSteamAPI.#baseURL}/IPlayerService/GetOwnedGames/v0001/?key=${CallSteamAPI.#key}&steamid=${steamid}${includeAppInfoParam}${includePlayedFreeGamesParam}&format=json`;
+        const url = `${CallSteamAPI.#baseURL}/IPlayerService/GetOwnedGames/v0001/?key=${this.key}&steamid=${steamid}${includeAppInfoParam}${includePlayedFreeGamesParam}&format=json`;
         try {
             const response = await fetch(url);
             const data = await response.json();
@@ -85,7 +101,7 @@ class CallSteamAPI {
     }
     async getRecentlyPlayedGames(steamid, count = null) {
         const countParam = count ? `&count=${count}` : '';
-        const url = `${CallSteamAPI.#baseURL}/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${CallSteamAPI.#key}&steamid=${steamid}${countParam}&format=json`;
+        const url = `${CallSteamAPI.#baseURL}/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${this.key}&steamid=${steamid}${countParam}&format=json`;
         try {
             const response = await fetch(url);
             const data = await response.json();
