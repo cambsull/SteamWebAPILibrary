@@ -225,8 +225,6 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 ```myAppVariable.getNewsForApp('440', 5, 500)```
 
- Returns five news data entries for App ID 440 with up to 500 characters each.
-
  ### 5.2 getGlobalAchievementPercentagesForApp
 
  **Description**: Returns global achievements for the specific game in percentages.
