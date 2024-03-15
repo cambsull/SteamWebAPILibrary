@@ -1,9 +1,14 @@
 # Steam Web API Library
 
+# Version
+
+Steam Web API Library is currently in version: 0.1.0 per the (Semantic Versioning standards)[https://semvar.org].
+
+Enhancements, features, and known issues are available in the (Issues)[https://github.com/cambsull/SteamWebAPILibrary/issues] and (Projects)[https://github.com/users/cambsull/projects/3] section of this respository.
+
 ## Overview
 
-Steam Web API Library is a JavaScript library that makes it easier to query data from the Steam Web API. The library reduces the amount of tedious API endpoint information you
-need to look up by doing that part for you. All you need to do is import the library, instantiate it via the *new* keyword, and follow the usage guide below! The library returns data as a JSON object.
+Steam Web API Library is a JavaScript library that makes it easier to query data from the Steam Web API. The library reduces the amount of tedious API endpoint information you need to look up by doing that part for you. All you need to do is import the library, instantiate it via the *new* keyword, and follow the usage guide below! The library returns data as a JSON object.
 
 ## Getting Steam Web API Library ready
 
