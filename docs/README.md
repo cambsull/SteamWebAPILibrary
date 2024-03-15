@@ -38,7 +38,7 @@ Steam Web API Library is easy to install and use:
 ## 2.0 Usage
 
 
-### 2.1 Option one (reommended) -- passing arguments as a destructured object
+### 2.1 Option one (recommended) -- passing arguments as a destructured object
 
 Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
 
