@@ -38,7 +38,7 @@ class CallSteamAPI {
         }
     }
     async getFriendList(steamid, relationship = `friend`) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetFriendList/v0001/?key=${CallSteamAPI.#key}&steamid=${steamid}&relationship=${relationship}`;
+        const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetFriendList/v0001/?key=${CallSteamAPI.#key}&steamid=${steamid}&relationship=${relationship}&format=json`;
         try {
             const response = await fetch(url);
             const data = await response.json();
