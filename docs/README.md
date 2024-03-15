@@ -177,7 +177,7 @@ Below are the expected server responses for each available argument, per method.
 |                 appids_filter                | Filtered results per method call |    N/A   |
 |                 format, legal                |       json, xml, vdf object      |    200   |
 |                format, illegal               |            json object           |    200   |
-|           format, blank/unspecified          |            json object           |     z    |
+|           format, blank/unspecified          |            json object           |    200   |
 |            include_appinfo, legal            |       json, xml, vdf object      |    200   |
 |           include_appinfo, illegal           |       json, xml, vdf object      |    200   |
 |      include_appinfo, blank/unspecified      |       json, xml, vdf object      |    200   |
