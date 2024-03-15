@@ -52,6 +52,23 @@ myFunction()
 
 ```
 
+## Parameter definitions
+
+|     **Parameter name**    |   **Valid types**  |                          **Valid arguments**                         |                                    **Notes**                                    |
+|:-------------------------:|:------------------:|:--------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
+|           appid           |     String, Int    |                       Must be a multiple of 10                       |                                   Steam App ID                                  |
+|       appids_filter       |       Integer      |                           Array of Integers                          |                              Requires a method call                             |
+|           count           | String, Int, Float | No upper limit; API returns maximum available for very large numbers |   Number of items to return from query. Float rounded down to nearest integer.  |
+|           format          |       String       |                             json, xml, vdf                           |                             Format of returned data                             |
+|           gameid          |     String, Int    |                       Must be a multiple of 10                       |                          Essentially identical to appid                         |
+|            key            |       String       |                                  N/A                                 |                                  32 characters                                  |
+|      include_appinfo      |       Boolean      |                              true, false                             |                                                                                 |
+| include_played_free_games |       Boolean      |                              true, false                             |                                                                                 |
+|             l             |       String       |                               Language                               |                             This is a lower case “L”                            |
+|         maxlength         | String, Int, Float | No upper limit; API returns maximum available for very large numbers | Number of characters to return per item. Float rounded down to nearest integer. |
+|        relationship       |       String       |                              all, friend                             |                         Not sure what this actually does                        |
+|          steamid          |       String       |                                64-bit                                |                             Steam Player Profile ID                             |
+
 ## Methods
 
 Steam Web API Library has a method for each available Steam Web API Method. The method names are identical to the [official Steam Web API documentation](https://developer.valvesoftware.com/wiki/Steam_Web_API). This section describes how to use each method within the context of the Steam Web API Library. The methods are presented in the same order as the official Steam Web API Library (as of the time of this writing).
