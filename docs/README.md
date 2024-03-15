@@ -77,6 +77,36 @@ Below are the expected server responses for each available argument, per method.
 
 ### 4.1 getNewsForApp
 
+|         **Argument**         |                 **Returns**                 | **Code** |
+|:----------------------------:|:-------------------------------------------:|:--------:|
+|         appid, legal         |            json, xml, vdf object            |    200   |
+|        appid, illegal        |                 Empty object                |    403   |
+|   appid, blank/unspecified   |                 Bad request                 |    400   |
+|         count, legal         |            json, xml, vdf object            |    200   |
+|        count, illegal        |     json, xml, vdf object (no newsitems)    |    200   |
+|   count, blank/unspecified   |     json, xml, vdf object (20 newsitems)    |    200   |
+|         format, legal        |            json, xml, vdf object            |    200   |
+|        format, illegal       |                 json object                 |    200   |
+|   format, blank/unspecified  |                 json object                 |    200   |
+|       maxlength, legal       |            json, xml, vdf object            |    200   |
+|      maxlength, illegal      | json, xml, vdf object (maximum char length) |    200   |
+| maxlength, blank/unspecified | json, xml, vdf object (maximum char length) |    200   |
+
+
+### 4.2 getGlobalAchievementPercentagesForApp
+
+|        **Argument**       |      **Returns**      | **Code** |
+|:-------------------------:|:---------------------:|:--------:|
+|       format, legal       | json, xml, vdf object |    200   |
+|      format, illegal      |      json object      |    200   |
+| format, blank/unspecified |      json object      |    200   |
+|       gameid, legal       | json, xml, vdf object |    200   |
+|      gameid, illegal      |      Empty object     |    403   |
+| gameid, blank/unspecified |      Bad request      |    400   |
+
+
+### 4.3 getPlayerSummaries
+
 
 
 
