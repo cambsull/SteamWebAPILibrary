@@ -63,7 +63,7 @@ myFunc({
     appid: '440',
 });
 
-// Returns 5 articles of news for the selected appid, 440.
+// Returns 5 articles of news of up to 500 characters each for the selected appid, 440.
 ```
 
 Parameters that have a default value will maintain their default value whether or not they are included in your destructured object.
@@ -85,7 +85,7 @@ myFunc({
     appid: '440',
 });
 
-// Returns 3 articles of news that are each up to 300 characters long for the selected appid, 440.
+// Returns the default 3 articles of news of up to the default 300 characters each for the selected appid, 440.
 ```
 
 ### 2.2 Option two -- passing arguments directly
