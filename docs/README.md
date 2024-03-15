@@ -6,7 +6,7 @@ Steam Web API Library is currently in version 0.1.0 per the [Semantic Versioning
 
 Enhancements, features, and known issues are available in the [Issues](https://github.com/cambsull/SteamWebAPILibrary/issues) and [Projects](https://github.com/users/cambsull/projects/3) section of this respository.
 
-## Overview
+## 1.0 Overview
 
 Steam Web API Library is a JavaScript library that makes it easier to query data from the Steam Web API. The library reduces the amount of tedious API endpoint information you need to look up by doing that part for you. All you need to do is import the library, instantiate it via the *new* keyword, and follow the usage guide below! The library returns data as a JSON object.
 
@@ -35,7 +35,7 @@ Steam Web API Library is easy to install and use:
 
 ```import CallSteamAPI from "./SteamWebAPILibrary.js";```
 
-## Usage
+## 2.0 Usage
 
 Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
 
@@ -52,7 +52,7 @@ myFunction()
 
 ```
 
-## Parameter definitions
+## 3.0 Parameter definitions
 
 |     **Parameter name**    |   **Valid types**  |                          **Valid arguments**                         |                                    **Notes**                                    |
 |:-------------------------:|:------------------:|:--------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
@@ -68,6 +68,20 @@ myFunction()
 |         maxlength         | String, Int, Float | No upper limit; API returns maximum available for very large numbers | Number of characters to return per item. Float rounded down to nearest integer. |
 |        relationship       |       String       |                              all, friend                             |                         Not sure what this actually does                        |
 |          steamid          |       String       |                                64-bit                                |                             Steam Player Profile ID                             |
+
+## 4.0 Expected return values, per method
+
+Below are the expected server responses for each available argument, per method.
+
+"Code" refers to the HTTPS response from the Steam Web API server(s).
+
+### 4.1 getNewsForApp
+
+
+
+
+
+
 
 ## Methods
 
