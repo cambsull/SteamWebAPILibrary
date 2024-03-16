@@ -1,5 +1,71 @@
 import 'dotenv/config';
 
+async function handleEndpointOrFormat(format, url, method, specificData) {
+    //DRY template for handling if a specific format or data endpoint is specified
+
+    let dataEndpoint = null;
+
+    switch (method) {
+        case 'getNewsForApp':
+            if (specificData) {
+                dataEndpoint = 'appnews.' + specificData;
+            } else {
+                dataEndpoint = 'appnews'
+            }
+            break;
+        case 'getGlobalAchievementPercentagesForApp':
+            if (specificData) {
+                dataEndpoint = 'achievementpercentages.' + specificData;
+            } else {
+                dataEndpoint = 'achievementpercentages.achievements';
+            }
+            break;
+        default:
+            console.error("Invalid method: ", method);
+            return null;
+    }
+
+    if (format === 'json' || format === '') {
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const keys = dataEndpoint.split('.');
+            const result = keys.reduce((acc, key) => acc[key], data);
+
+            return result;
+
+        } catch (error) {
+            console.error('The server returned an error: ', error);
+            return null;
+        }
+    } else if (format === 'xml') {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`The server returned an error: ${response.status}`);
+            }
+            const xml = await response.text();
+            return xml;
+        } catch (error) {
+            console.error('Error fetching XML: ', error);
+            return null;
+        }
+    } else if (format === 'vdf') try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const vdf = await response.text();
+        return vdf;
+    } catch (error) {
+        console.error('Error fetching VDF: ', error);
+        return null;
+    } else {
+        console.error(`An unknown format was specified. Format is an optional parameter and is a JSON object by default.`)
+        return null;
+    }
+}
+
 class CallSteamAPI {
     static #baseURL = `http://api.steampowered.com`;
 
@@ -20,28 +86,45 @@ class CallSteamAPI {
         }
     }
 
-    async getNewsForApp(appid, count = 3, maxlength = 300) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamNews/GetNewsForApp/v0002/?appid=${appid}&count=${count}&maxlength=${maxlength}&format=json`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.appnews.newsitems;
-        } catch (error) {
-            console.error('The server returned an error: ', error);
-            return null;
+    async getNewsForApp(appid, count = 3, maxlength = 300, format = 'json', specificData) {
+        const endpoint = `/ISteamNews/GetNewsForApp/v0002/`;
+        const query = `?appid=${appid}&count=${count}&maxlength=${maxlength}&format=${format}`;
+        const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
+
+        if (format != 'json' || specificData) {
+
+            return handleEndpointOrFormat(format, url, 'getNewsForApp', specificData);
+        } else {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.appnews;
+            } catch (error) {
+                console.error('The server returned an error: ', error);
+                return null;
+            }
         }
     }
-    async getGlobalAchievementPercentagesForApp(gameid) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v002/?gameid=${gameid}&format=json`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.achievementpercentages.achievements;
-        } catch (error) {
-            console.error('The server returned an error: ', error)
-            return null;
+
+    async getGlobalAchievementPercentagesForApp(gameid, format, specificData) {
+        const endpoint = `/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v002/`;
+        const query = `?gameid=${gameid}&format=${format}`;
+        const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
+
+        if (format || specificData) {
+            return handleEndpointOrFormat(format, url, 'getGlobalAchievementPercentagesForApp', specificData);
+        } else {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.achievementpercentages.achievements;
+            } catch (error) {
+                console.error('The server returned an error: ', error);
+                return null;
+            }
         }
     }
+
     async getPlayerSummaries(steamids) {
         const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetPlayerSummaries/v0002/?key=${this.key}&steamids=${steamids}`;
         try {
