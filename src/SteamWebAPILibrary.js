@@ -3,7 +3,7 @@ import 'dotenv/config';
 async function handleEndpointOrFormat(format, url, method, specificData) {
     //DRY template for handling if a specific format or data endpoint is specified
 
-    let dataEndpoint = null;
+    let dataEndpoint = '';
 
     switch (method) {
         case 'getNewsForApp':
@@ -25,6 +25,20 @@ async function handleEndpointOrFormat(format, url, method, specificData) {
                 dataEndpoint = 'response.' + specificData;
             } else {
                 dataEndpoint = 'response';
+            }
+            break;
+        case 'getFriendList':
+            if (specificData) {
+                dataEndpoint = 'friendslist.' + specificData;
+            } else {
+                dataEndpoint = 'friendslist';
+            }
+            break;
+        case 'getPlayerAchievements':
+            if (specificData) {
+                dataEndpoint = 'playerstats.' + specificData;
+            } else {
+                dataEndpoint = 'playerstats';
             }
             break;
         default:
@@ -54,13 +68,13 @@ async function handleEndpointOrFormat(format, url, method, specificData) {
             const xml = await response.text();
             return xml;
         } catch (error) {
-            console.error('Error fetching XML: ', error);
+            console.error(`The server returned an error: ${response.status}`);
             return null;
         }
     } else if (format === 'vdf') try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`Error fetching VDF: ${response.status}`);
         }
         const vdf = await response.text();
         return vdf;
@@ -152,26 +166,41 @@ class CallSteamAPI {
         }
     }
 
-    async getFriendList(steamid, relationship = `friend`) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetFriendList/v0001/?key=${this.key}&steamid=${steamid}&relationship=${relationship}&format=json`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.friendslist.friends;
-        } catch (error) {
-            console.error('The server returned an error: ', error)
-            return null;
+    async getFriendList(steamid, relationship = `friend`, format = 'json', specificData) {
+        const endpoint = `/ISteamUser/GetFriendList/v0001/`;
+        const query = `?key=${this.key}&steamid=${steamid}&relationship=${relationship}&format=${format}`
+        const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
+
+        if (format || specificData) {
+            return handleEndpointOrFormat(format, url, 'getFriendList', specificData)
+        } else {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.friendslist;
+            } catch (error) {
+                console.error('The server returned an error: ', error);
+                return null;
+            }
         }
     }
-    async getPlayerAchievements(steamid, appid) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUserStats/GetPlayerAchievements/v0001/?appid=${appid}&key=${this.key}&steamid=${steamid}`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.playerstats;
-        } catch (error) {
-            console.error('The server returned an error: ', error)
-            return null;
+
+    async getPlayerAchievements(steamid, appid, format = 'json', specificData) {
+        const endpoint = `/ISteamUserStats/GetPlayerAchievements/v0001/`;
+        const query = `?appid=${appid}&key=${this.key}&steamid=${steamid}&format=${format}`
+        const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
+
+        if (format || specificData) {
+            return handleEndpointOrFormat(format, url, 'getPlayerAchievements', specificData)
+        } else {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.playerstats;
+            } catch (error) {
+                console.error('The server returned an error: ', error);
+                return null;
+            }
         }
     }
     async getUserStatsForGame(steamid, appid) {

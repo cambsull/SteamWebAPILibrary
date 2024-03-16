@@ -35,7 +35,7 @@ Steam Web API Library is easy to install and use:
 
 ```import CallSteamAPI from "./SteamWebAPILibrary.js";```
 
-## 2.0 | Usage
+## 2.0 | Usage and Functionality
 
 
 ### 2.1 | Option one (recommended) -- passing arguments as a destructured object
@@ -111,7 +111,77 @@ myFunc()
 
 ```
 
+### 2.3 | Querying for specific data endpoints
 
+Steam Web API Library is capable of flexibly returning specific data endpoints as well as returning the whole data object. By default, the full data object will be returned.
+
+Specific data endpoint querying is only supported in JSON format. XML and VDF objects are returned as-in in their full scope and format.
+
+The special *specificData* parameter determines whether the library will attempt to pull specific data information from the API. If *specificData* is specified with a valid
+endpoint, the library will return only that data:
+
+```js
+
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({steamid, appid, format, specificData}) {
+    
+    const mySteamid = steamid;
+    const myAppid = appid;
+    const myFormat = format;
+    const mySpecificData = specificData;
+
+    const result = await myAppVariable.getPlayerAchievements(mySteamid, myAppid, myFormat, mySpecificData);
+    //Do something with the result
+}
+
+myFunc({
+    steamid: '76561197960434622',
+    appid: '413150',
+    format: 'json',
+    specificData: 'achievements'
+});
+
+// Returns the 'achievements' object for the game Stardew Valley, for this specific Steam user.
+
+```
+
+Compare this to not using the *specificData* parameter:
+
+```
+js
+
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({steamid, appid, format, specificData}) {
+    
+    const mySteamid = steamid;
+    const myAppid = appid;
+    const myFormat = format;
+    const mySpecificData = specificData;
+
+    const result = await myAppVariable.getPlayerAchievements(mySteamid, myAppid, myFormat, mySpecificData);
+    //Do something with the result
+}
+
+myFunc({
+    steamid: '76561197960434622',
+    appid: '413150',
+    format: 'json',
+});
+
+// Returns the 'playerstats' object for the game Stardew Valley, for this specific Steam user.
+
+// The 'playerstats' object contains within it the 'achievements' object.
+
+// Note that you can still pass 'mySpecificData' without calling it as a destructured object argument, and the library will still work. This is because
+// the library supports error handling that reverts to default API expectations.
+
+```
 
 ## 3.0 | Parameter Definitions
 
