@@ -177,8 +177,9 @@ myFunc({
 
 // The 'playerstats' object contains within it the 'achievements' object.
 
-// Note that you can still pass 'mySpecificData' without calling it as a destructured object argument, and the library will still work. This is because
-// the library supports error handling that reverts to default API expectations.
+// Note that you can still pass 'mySpecificData' without calling it as a destructured object 
+// argument, and the library will still work. This is because the library supports error 
+// handling that reverts to default API expectations.
 
 ```
 
