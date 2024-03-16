@@ -17,7 +17,7 @@ async function handleEndpointOrFormat(format, url, method, specificData) {
             if (specificData) {
                 dataEndpoint = 'achievementpercentages.' + specificData;
             } else {
-                dataEndpoint = 'achievementpercentages.achievements';
+                dataEndpoint = 'achievementpercentages';
             }
             break;
         case 'getPlayerSummaries':

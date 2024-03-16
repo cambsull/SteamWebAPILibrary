@@ -8,7 +8,7 @@ Enhancements, features, and known issues are available in the [Issues](https://g
 
 ## Overview
 
-Steam Web API Library is a JavaScript library that makes it easier to query data from the Steam Web API. The library reduces the amount of tedious API endpoint information you need to look up by doing that part for you. All you need to do is import the library, instantiate it via the *new* keyword, and follow the usage guide below! The library returns data as a JSON object.
+Steam Web API Library is a JavaScript library that makes it easier to query data from the Steam Web API. The library reduces the amount of tedious API endpoint information you need to look up by doing that part for you. All you need to do is import the library and follow the usage guide below! The library can return data as a JSON, XML, or VDF (Valve Data Format) object.
 
 ## 1.0 | Quickstart Guide
 
