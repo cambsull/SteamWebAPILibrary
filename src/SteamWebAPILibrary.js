@@ -20,6 +20,13 @@ async function handleEndpointOrFormat(format, url, method, specificData) {
                 dataEndpoint = 'achievementpercentages.achievements';
             }
             break;
+        case 'getPlayerSummaries':
+            if (specificData) {
+                dataEndpoint = 'response.' + specificData;
+            } else {
+                dataEndpoint = 'response';
+            }
+            break;
         default:
             console.error("Invalid method: ", method);
             return null;
@@ -86,13 +93,14 @@ class CallSteamAPI {
         }
     }
 
+    //Format should always be specified, but if for some reason handleEndpointOrFormat doesn't execute, methods will at least return a default JSON object
+
     async getNewsForApp(appid, count = 3, maxlength = 300, format = 'json', specificData) {
         const endpoint = `/ISteamNews/GetNewsForApp/v0002/`;
         const query = `?appid=${appid}&count=${count}&maxlength=${maxlength}&format=${format}`;
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
-        if (format != 'json' || specificData) {
-
+        if (format || specificData) {
             return handleEndpointOrFormat(format, url, 'getNewsForApp', specificData);
         } else {
             try {
@@ -106,7 +114,7 @@ class CallSteamAPI {
         }
     }
 
-    async getGlobalAchievementPercentagesForApp(gameid, format, specificData) {
+    async getGlobalAchievementPercentagesForApp(gameid, format = 'json', specificData) {
         const endpoint = `/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v002/`;
         const query = `?gameid=${gameid}&format=${format}`;
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
@@ -125,17 +133,25 @@ class CallSteamAPI {
         }
     }
 
-    async getPlayerSummaries(steamids) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetPlayerSummaries/v0002/?key=${this.key}&steamids=${steamids}`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.response.players;
-        } catch (error) {
-            console.error('The server returned an error: ', error)
-            return null;
+    async getPlayerSummaries(steamids, format = 'json', specificData) {
+        const endpoint = `/ISteamUser/GetPlayerSummaries/v0002/`;
+        const query = `?key=${this.key}&steamids=${steamids}&format=${format}`
+        const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
+
+        if (format || specificData) {
+            return handleEndpointOrFormat(format, url, 'getPlayerSummaries', specificData);
+        } else {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.response;
+            } catch (error) {
+                console.error('The server returned an error: ', error);
+                return null;
+            }
         }
     }
+
     async getFriendList(steamid, relationship = `friend`) {
         const url = `${CallSteamAPI.#baseURL}/ISteamUser/GetFriendList/v0001/?key=${this.key}&steamid=${steamid}&relationship=${relationship}&format=json`;
         try {
