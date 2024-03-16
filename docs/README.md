@@ -150,8 +150,7 @@ myFunc({
 
 Compare this to not using the *specificData* parameter:
 
-```
-js
+```js
 
 import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
