@@ -49,7 +49,7 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, appid, format}){
+async function myFunc({steamid, appid, format}) {
 
     const result = await myAppVariable.getPlayerAchievements(steamid, appid, format);
     // Do something with the result
