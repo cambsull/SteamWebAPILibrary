@@ -93,7 +93,7 @@ methods.
 const myAppVariable = new CallSteamAPI();
 
 async function myFunc() {
-  
+
   const result = await myAppVariable.getNewsForApp('440', '4', '400')
   //Do something with the result
 }
@@ -117,7 +117,7 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, appid, format, specificData}){
+async function myFunc({steamid, appid, format, specificData}) {
 
     const result = await myAppVariable.getPlayerAchievements(steamid, appid, format, specificData);
     // Do something with the result
