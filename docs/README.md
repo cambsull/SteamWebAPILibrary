@@ -45,25 +45,21 @@ Create an async function and call the library method you wish to use, then call 
 When using this method, you may place your arguments in any order you wish in your destructured object, and it will be easier to see which arguments are being passed.
 
 ```js
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({appid, count, maxlength}) {
+async function myFunc({steamid, appid, format}){
 
-    const myAppId = appid;
-    const myCount = count;
-    const myMaxLength = maxlength;
-
-    const result = await myAppVariable.getNewsForApp(myAppId, myCount, myMaxLength);
-    //Do something with the result
+    const result = await myAppVariable.getPlayerAchievements(steamid, appid, format);
+    // Do something with the result
 }
 
 myFunc({
-    count: '5',
-    maxlength: '500',
-    appid: '440',
+    steamid: '76561197960434622', // Returns data about this Steam profile
+    appid: '413150', // Returns data about the app 413150 (Stardew Valley)
+    format: 'json', // Returns data in JSON format
 });
-
-// Returns up to 5 articles of news, each up to 500 characters, for the selected appid, 440.
 ```
 
 Parameters that have a default value will maintain their default value whether or not they are included in your destructured object.
@@ -82,10 +78,8 @@ async function myFunc({appid, count, maxlength}) {
 }
 
 myFunc({
-    appid: '440',
+    appid: '440', // Returns the default 3 articles of news, with the default 300 characters, for appid 440.
 });
-
-// Returns up to the default 3 articles of news, each up to the default 300 characters, for the selected appid, 440.
 ```
 
 ### 2.2 | Option two -- passing arguments directly
@@ -96,7 +90,6 @@ This has the disadvantage of being less clear which arguments you are passing fo
 methods.
 
 ```js
-
 const myAppVariable = new CallSteamAPI();
 
 async function myFunc() {
@@ -108,12 +101,11 @@ async function myFunc() {
 myFunc()
 
 //Returns up to four articles of news, each up to 400 characters, for the selected appid, 440.
-
 ```
 
 ### 2.3 | Querying for specific data endpoints
 
-Steam Web API Library is capable of flexibly returning specific data endpoints as well as returning the whole data object. By default, the full data object will be returned.
+Steam Web API Library is capable of flexibly returning specific fields as well as returning the whole data object. By default, the full data object will be returned.
 
 Specific data endpoint querying is only supported in JSON format. XML and VDF objects are returned as-in in their full scope and format.
 
@@ -121,66 +113,22 @@ The special *specificData* parameter determines whether the library will attempt
 endpoint, the library will return only that data:
 
 ```js
-
 import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, appid, format, specificData}) {
-    
-    const mySteamid = steamid;
-    const myAppid = appid;
-    const myFormat = format;
-    const mySpecificData = specificData;
+async function myFunc({steamid, appid, format, specificData}){
 
-    const result = await myAppVariable.getPlayerAchievements(mySteamid, myAppid, myFormat, mySpecificData);
-    //Do something with the result
+    const result = await myAppVariable.getPlayerAchievements(steamid, appid, format, specificData);
+    // Do something with the result
 }
 
 myFunc({
-    steamid: '76561197960434622',
-    appid: '413150',
-    format: 'json',
-    specificData: 'achievements'
+    steamid: '76561197960434622', // Returns data about this Steam profile
+    appid: '413150', // Returns data about the app 413150 (Stardew Valley)
+    format: 'json', // Returns data in JSON format
+    specificData: 'achievements' // Returns the achievement field specifically from the data endpoint
 });
-
-// Returns the 'achievements' object for the game Stardew Valley, for this specific Steam user.
-
-```
-
-Compare this to not using the *specificData* parameter:
-
-```js
-
-import CallSteamAPI from "./src/SteamWebAPILibrary.js";
-
-const myAppVariable = new CallSteamAPI();
-
-async function myFunc({steamid, appid, format, specificData}) {
-    
-    const mySteamid = steamid;
-    const myAppid = appid;
-    const myFormat = format;
-    const mySpecificData = specificData;
-
-    const result = await myAppVariable.getPlayerAchievements(mySteamid, myAppid, myFormat, mySpecificData);
-    //Do something with the result
-}
-
-myFunc({
-    steamid: '76561197960434622',
-    appid: '413150',
-    format: 'json',
-});
-
-// Returns the 'playerstats' object for the game Stardew Valley, for this specific Steam user.
-
-// The 'playerstats' object contains within it the 'achievements' object.
-
-// Note that you can still pass 'mySpecificData' without calling it as a destructured object 
-// argument, and the library will still work. This is because the library supports error 
-// handling that reverts to default API expectations.
-
 ```
 
 ## 3.0 | Parameter Definitions
