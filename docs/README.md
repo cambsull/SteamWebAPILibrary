@@ -93,9 +93,8 @@ methods.
 const myAppVariable = new CallSteamAPI();
 
 async function myFunc() {
-        const result = await myAppVariable.getNewsForApp('440', '4', '400')
-        
-        //Do something with the result
+  const result = await myAppVariable.getNewsForApp('440', '4', '400')
+  //Do something with the result
 }
 
 myFunc()
