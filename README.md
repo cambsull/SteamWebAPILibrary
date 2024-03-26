@@ -69,10 +69,6 @@ const myAppVariable = new CallSteamAPI();
 
 async function myFunc({appid, count, maxlength}) {
 
-    const myAppId = appid;
-    const myCount = count;
-    const myMaxLength = maxlength;
-
     const result = await myAppVariable.getNewsForApp(myAppId, myCount, myMaxLength);
     //Do something with the result
 }
