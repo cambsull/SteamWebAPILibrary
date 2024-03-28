@@ -327,7 +327,23 @@ myFunc({
 
  **Example**:
 
- ```myAppVariable.getGlobalAchievementPercentagesForApp('440');```
+ ```js
+ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({appid, format}){
+
+    const result = await myAppVariable.getGlobalAchievementPercentagesForApp(appid, format);
+    // Do something with the result
+
+}
+
+myFunc({
+    appid: '413150', // Return info for the app "Stardew Valley"
+    format: 'vdf' // Return in Valve Data Format
+});
+```
 
  ### 5.3 | getPlayerSummaries 
 
