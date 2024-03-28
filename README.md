@@ -296,6 +296,8 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 * maxlength (optional) : The maximum length of each entry in characters, as a string or integer.
 
+* format (optional) : The format to return the data-- JSON (default), XML, or VDF.
+
 **Example**:
 
 ```js
@@ -325,6 +327,8 @@ myFunc({
 
  * appid : The appID of the game for which you want to retrieve the global achievement stats.
 
+ * format (optional) : The format to return the data-- JSON (default), XML, or VDF.
+
  **Example**:
 
  ```js
@@ -352,6 +356,8 @@ myFunc({
 
  * steamids: A string of Steam Player IDs, separated by a comma. The API supports up to 100.
 
+ * format (optional) : The format to return the data-- JSON (default), XML, or VDF.
+
  **Example**:
 
  ```js
@@ -367,7 +373,7 @@ async function myFunc({steamids, format}){
 
 myFunc({
     steamids: '76561197960435530, 76561197960435531, 76561197960435532, 76561197960435533', // Return info for the specified Steam IDs
-    format: 'json' // Return in JSON format (optional, enabled by default and can be omitted)
+    format: 'json' // Return in JSON format (redundant, enabled by default and can be omitted)
 });
 ```
  
@@ -383,7 +389,22 @@ myFunc({
 
  **Example**:
 
- ```myAppVariable.getFriendList('76561197960435530');```
+ ```js
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({steamid, relationship}){
+
+    const result = await myAppVariable.getFriendList(steamid, relationship);
+    // Do something with the result
+}
+
+myFunc({
+    steamid: '76561197960435530', // Return info for the specified Steam ID
+    relationship: 'all', // Return all relationship data for the specified Steam ID
+});
+```
 
  (Note: this particular example uses the profile ID found in the official documentation, which is current set to private.)
 
