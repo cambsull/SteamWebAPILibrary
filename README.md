@@ -432,7 +432,6 @@ const myAppVariable = new CallSteamAPI();
 async function myFunc({steamid, appid, format}){
 
     const result = await myAppVariable.getPlayerAchievements(steamid, appid, format);
-    console.log(result)
     // Do something with the result
 }
 
