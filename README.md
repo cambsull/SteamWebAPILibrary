@@ -306,7 +306,7 @@ const myAppVariable = new CallSteamAPI();
 async function myFunc({appid, count, maxlength, format}){
 
     const result = await myAppVariable.getNewsForApp(appid, count, maxlength, format);
-    console.log(result);
+    // Do something with the result
 }
 
 myFunc({
