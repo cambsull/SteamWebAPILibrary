@@ -53,7 +53,6 @@ async function handleEndpointOrFormat(format, url, method, specificData) {
         case 'getOwnedGames':
             if (specificData) {
                 dataEndpoint = 'response.' + specificData;
-                console.log(dataEndpoint)
             } else {
                 dataEndpoint = 'response';
             }
@@ -242,8 +241,6 @@ class CallSteamAPI {
         const endpoint = `/IPlayerService/GetOwnedGames/v0001/`;
         const query = `?key=${this.key}&steamid=${steamid}${includeAppInfoParam}${includePlayedFreeGamesParam}&format=${format}`;
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
-
-    
 
         if (format || specificData) {
             return (handleEndpointOrFormat)(format, url, 'getOwnedGames', specificData)

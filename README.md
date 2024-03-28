@@ -298,7 +298,23 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 **Example**:
 
-```myAppVariable.getNewsForApp('440', 5, 500)```
+```import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({appid, count, maxlength, format}){
+
+    const result = await myAppVariable.getNewsForApp(appid, count, maxlength, format);
+    console.log(result);
+}
+
+myFunc({
+    appid: '413150', // Return info for the app "Stardew Valley"
+    format: 'xml', // Return in xml format
+    count: '10', // Return up to 10 results, if available
+    maxlength: '500' // Return up to a maximum of 500 characters per result
+});
+```
 
  ### 5.2 | getGlobalAchievementPercentagesForApp
 
