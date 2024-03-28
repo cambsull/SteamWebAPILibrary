@@ -57,6 +57,13 @@ async function handleEndpointOrFormat(format, url, method, specificData) {
                 dataEndpoint = 'response';
             }
             break;
+        case 'getRecentlyPlayedGames':
+            if (specificData) {
+                dataEndpoint = 'response.' + specificData;
+            } else {
+                dataEndpoint = 'response';
+            }
+            break;
         default:
             console.error("Invalid method: ", method);
             return null;
@@ -123,7 +130,7 @@ class CallSteamAPI {
         }
     }
 
-    //Format should always be specified, but if for some reason handleEndpointOrFormat doesn't execute, methods will at least return a default JSON object
+    //Format should be truthy in each method by default, but if for some reason handleEndpointOrFormat doesn't execute, methods will at least return a default JSON object
 
     async getNewsForApp(appid, count = 3, maxlength = 300, format = 'json', specificData) {
         const endpoint = `/ISteamNews/GetNewsForApp/v0002/`;
@@ -234,7 +241,6 @@ class CallSteamAPI {
         }
     }
     async getOwnedGames(steamid, format = 'json', specificData, includeAppInfo = true, includePlayedFreeGames = true) {
-        
         const includeAppInfoParam = includeAppInfo ? `&include_appinfo=true` : '';
         const includePlayedFreeGamesParam = includePlayedFreeGames ? `&include_played_free_games=true` : '';
 
@@ -243,7 +249,7 @@ class CallSteamAPI {
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
         if (format || specificData) {
-            return (handleEndpointOrFormat)(format, url, 'getOwnedGames', specificData)
+            return handleEndpointOrFormat(format, url, 'getOwnedGames', specificData);
         } else {
             try {
                 const response = await fetch(url);
@@ -255,16 +261,24 @@ class CallSteamAPI {
             }
         }
     }
-    async getRecentlyPlayedGames(steamid, count = null) {
+    async getRecentlyPlayedGames(steamid, format, count = null, specificData) {
         const countParam = count ? `&count=${count}` : '';
-        const url = `${CallSteamAPI.#baseURL}/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${this.key}&steamid=${steamid}${countParam}&format=json`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.response;
-        } catch (error) {
-            console.error('The server returned an error: ', error)
-            return null;
+
+        const endpoint = `/IPlayerService/GetRecentlyPlayedGames/v0001/`;
+        const query = `?key=${this.key}&steamid=${steamid}${countParam}&format=${format}`;
+        const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
+
+        if (format || specificData) {
+            return handleEndpointOrFormat(format, url, 'getRecentlyPlayedGames', specificData)
+        } else {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.response;
+            } catch (error) {
+                console.error('The server returned an error: ', error)
+                return null;
+            }
         }
     }
 }

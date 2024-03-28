@@ -497,9 +497,9 @@ async function myFunc({steamid, format, specificData, includeAppInfo, includePla
 }
 
 myFunc({
-    steamid: '0123456789',
-    format: 'json',
-    specificData: 'games',
+    steamid: '0123456789', // Return data for the specified Steam ID
+    format: 'json', // Return in JSON format
+    specificData: 'games', // Return the specific games object inside of the primary returned object
     includeAppInfo: false, // Disable additional app info, which is enabled by default.
     includePlayedFreeGames: false // Disable including played free games, which is enabled by default.
 });
@@ -515,4 +515,20 @@ myFunc({
 
 **Example**:
 
-```myAppVariable.getRecentlyPlayedGames('76561197960435530');```
+```js
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({steamid, format, count}){
+
+    const result = await myAppVariable.getRecentlyPlayedGames(steamid, format, count);
+    // Do something with the result
+}
+
+myFunc({
+    steamid: '0123456789', // Return info for the specified Steam ID
+    count: '3', // Return up to 3 most recently played games
+    format: 'xml' // Return in XML format
+});
+```
