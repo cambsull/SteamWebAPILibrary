@@ -387,6 +387,8 @@ myFunc({
 
  * relationship (optional): The relationship of the information to the specified user, as a string. Accepted arguments are "all" and "friend".
 
+ * format (optional) : The format to return the data-- JSON (default), XML, or VDF.
+
  **Example**:
 
  ```js
@@ -418,9 +420,27 @@ myFunc({
 
 * appid : The appID of the game for which you want to retrieve the player achievements.
 
+* format (optional) : The format to return the data-- JSON (default), XML, or VDF.
+
 **Example**:
 
-```myAppVariable.getPlayerAchievements('76561197960435530', '440');```
+```js
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({steamid, appid, format}){
+
+    const result = await myAppVariable.getPlayerAchievements(steamid, appid, format);
+    console.log(result)
+    // Do something with the result
+}
+
+myFunc({
+    steamid: '76561197960435530', // Return info for the specified Steam ID
+    appid: '440', // Return all relationship data for the app "Team Fortress 2"
+});
+```
 
 ### 5.6 | getUserStatsForGame
 
