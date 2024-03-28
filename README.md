@@ -453,7 +453,23 @@ myFunc({
 
 **Example**:
 
-```myAppVariable.getUserStatsForGame('76561197960435530', '440')```
+```js
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({steamid, appid}){
+
+    const result = await myAppVariable.getUserStatsForGame(steamid, appid);
+    // Do something with the result
+
+}
+
+myFunc({
+    steamid: '76561197960435530', // Return info for the specified Steam ID
+    appid: '440', // Return all relationship data for the app "Team Fortress 2"
+});
+```
 
 ### 5.7 | getOwnedGames
 
