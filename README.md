@@ -336,7 +336,6 @@ async function myFunc({appid, format}){
 
     const result = await myAppVariable.getGlobalAchievementPercentagesForApp(appid, format);
     // Do something with the result
-
 }
 
 myFunc({
@@ -355,7 +354,22 @@ myFunc({
 
  **Example**:
 
- ```myAppVariable.getPlayerSummaries('76561197960435530, 76561197960435531, 76561197960435532, 76561197960435533');```
+ ```js
+ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({steamids, format}){
+
+    const result = await myAppVariable.getPlayerSummaries(steamids);
+    // Do something with the result
+}
+
+myFunc({
+    steamids: '76561197960435530, 76561197960435531, 76561197960435532, 76561197960435533', // Return info for the specified Steam IDs
+    format: 'json' // Return in JSON format (optional, enabled by default and can be omitted)
+});
+```
  
  ### 5.4 | getFriendList
 
