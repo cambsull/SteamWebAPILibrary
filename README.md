@@ -298,7 +298,8 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 **Example**:
 
-```import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+```js
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
@@ -398,7 +399,7 @@ myFunc({
 
 **Example**:
 
-```
+```js
 import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
