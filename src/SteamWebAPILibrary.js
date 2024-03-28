@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { hasUncaughtExceptionCaptureCallback } from 'process';
 
 async function handleEndpointOrFormat(format, url, method, specificData) {
     //DRY template for handling if a specific format or data endpoint is specified
@@ -39,6 +40,22 @@ async function handleEndpointOrFormat(format, url, method, specificData) {
                 dataEndpoint = 'playerstats.' + specificData;
             } else {
                 dataEndpoint = 'playerstats';
+            }
+            break;
+        case 'getUserStatsForGame':
+            if (specificData) {
+                dataEndpoint = 'playerstats.' + specificData;
+                console.log(dataEndpoint);
+            } else {
+                dataEndpoint = 'playerstats';
+            }
+            break;
+        case 'getOwnedGames':
+            if (specificData) {
+                dataEndpoint = 'response.' + specificData;
+                console.log(dataEndpoint)
+            } else {
+                dataEndpoint = 'response';
             }
             break;
         default:
@@ -127,7 +144,6 @@ class CallSteamAPI {
             }
         }
     }
-
     async getGlobalAchievementPercentagesForApp(gameid, format = 'json', specificData) {
         const endpoint = `/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v002/`;
         const query = `?gameid=${gameid}&format=${format}`;
@@ -146,7 +162,6 @@ class CallSteamAPI {
             }
         }
     }
-
     async getPlayerSummaries(steamids, format = 'json', specificData) {
         const endpoint = `/ISteamUser/GetPlayerSummaries/v0002/`;
         const query = `?key=${this.key}&steamids=${steamids}&format=${format}`
@@ -165,14 +180,13 @@ class CallSteamAPI {
             }
         }
     }
-
     async getFriendList(steamid, relationship = `friend`, format = 'json', specificData) {
         const endpoint = `/ISteamUser/GetFriendList/v0001/`;
         const query = `?key=${this.key}&steamid=${steamid}&relationship=${relationship}&format=${format}`
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
         if (format || specificData) {
-            return handleEndpointOrFormat(format, url, 'getFriendList', specificData)
+            return handleEndpointOrFormat(format, url, 'getFriendList', specificData);
         } else {
             try {
                 const response = await fetch(url);
@@ -184,14 +198,13 @@ class CallSteamAPI {
             }
         }
     }
-
     async getPlayerAchievements(steamid, appid, format = 'json', specificData) {
         const endpoint = `/ISteamUserStats/GetPlayerAchievements/v0001/`;
-        const query = `?appid=${appid}&key=${this.key}&steamid=${steamid}&format=${format}`
+        const query = `?appid=${appid}&key=${this.key}&steamid=${steamid}&format=${format}`;
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
         if (format || specificData) {
-            return handleEndpointOrFormat(format, url, 'getPlayerAchievements', specificData)
+            return handleEndpointOrFormat(format, url, 'getPlayerAchievements', specificData);
         } else {
             try {
                 const response = await fetch(url);
@@ -203,28 +216,46 @@ class CallSteamAPI {
             }
         }
     }
-    async getUserStatsForGame(steamid, appid) {
-        const url = `${CallSteamAPI.#baseURL}/ISteamUserStats/GetUserStatsForGame/v0002/?appid=${appid}&key=${this.key}&steamid=${steamid}`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.playerstats;
-        } catch (error) {
-            console.error('The server returned an error: ', error)
-            return null;
+    async getUserStatsForGame(steamid, appid, format = 'json', specificData) {
+        const endpoint = `/ISteamUserStats/GetUserStatsForGame/v0002/`;
+        const query = `?appid=${appid}&key=${this.key}&steamid=${steamid}&format=${format}`;
+        const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
+
+        if (format || specificData) {
+            return handleEndpointOrFormat(format, url, 'getUserStatsForGame', specificData);
+        } else {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.playerstats;
+            } catch (error) {
+                console.error('The server returned an error: ', error)
+                return null;
+            }
         }
     }
-    async getOwnedGames(steamid, includeAppinfo = false, includePlayedFreeGames = false) {
-        const includeAppInfoParam = includeAppinfo ? `&include_appinfo=true` : '';
+    async getOwnedGames(steamid, format = 'json', specificData, includeAppInfo = true, includePlayedFreeGames = true) {
+        
+        const includeAppInfoParam = includeAppInfo ? `&include_appinfo=true` : '';
         const includePlayedFreeGamesParam = includePlayedFreeGames ? `&include_played_free_games=true` : '';
-        const url = `${CallSteamAPI.#baseURL}/IPlayerService/GetOwnedGames/v0001/?key=${this.key}&steamid=${steamid}${includeAppInfoParam}${includePlayedFreeGamesParam}&format=json`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.response.games;
-        } catch (error) {
-            console.error('The server returned an error: ', error)
-            return null;
+
+        const endpoint = `/IPlayerService/GetOwnedGames/v0001/`;
+        const query = `?key=${this.key}&steamid=${steamid}${includeAppInfoParam}${includePlayedFreeGamesParam}&format=${format}`;
+        const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
+
+    
+
+        if (format || specificData) {
+            return (handleEndpointOrFormat)(format, url, 'getOwnedGames', specificData)
+        } else {
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return data.response.games;
+            } catch (error) {
+                console.error('The server returned an error: ', error)
+                return null;
+            }
         }
     }
     async getRecentlyPlayedGames(steamid, count = null) {

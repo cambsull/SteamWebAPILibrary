@@ -376,13 +376,31 @@ Steam Web API Library has a method for each available Steam Web API Method. The 
 
 * steamid: The Steam Player ID of the profile to retrieve, as a string.
 
-* include_appinfo (optional): Whether or not you want additional app info included in the results, as as boolean.
+* include_appinfo (optional): Whether or not you want additional app info included in the results, as as boolean. By default, this is set to true.
 
-* include_played_free_games (optional): Whether or not you want to include free games that all Steam accounts technically "own", as a boolean.
+* include_played_free_games (optional): Whether or not you want to include free games that all Steam accounts technically "own", as a boolean. By default, this is set to true.
 
 **Example**:
 
-```myAppVariable.getOwnedGames('76561197960435530', true, true);```
+```
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
+const myAppVariable = new CallSteamAPI();
+
+async function myFunc({steamid, format, specificData, includeAppInfo, includePlayedFreeGames}){
+
+    const result = await myAppVariable.getOwnedGames(steamid, format, specificData, includeAppInfo, includePlayedFreeGames);
+    // Do something with the result
+}
+
+myFunc({
+    steamid: '0123456789',
+    format: 'json',
+    specificData: 'games',
+    includeAppInfo: false, // Disable additional app info, which is enabled by default.
+    includePlayedFreeGames: false // Disable including played free games, which is enabled by default.
+});
+```
 
 ### 5.8 | getRecentlyPlayedGames
 
