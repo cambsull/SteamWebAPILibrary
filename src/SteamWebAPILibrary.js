@@ -4,69 +4,26 @@ import { hasUncaughtExceptionCaptureCallback } from 'process';
 async function handleEndpointOrFormat(format, url, method, specificData) {
     //DRY template for handling if a specific format or data endpoint is specified
 
-    let dataEndpoint = '';
+    const endpointMapping = {
+        'getNewsForApp': 'appnews',
+        'getGlobalAchievementPercentagesForApp': 'achievementpercentages',
+        'getPlayerSummaries': 'response',
+        'getFriendList': 'friendslist',
+        'getPlayerAchievements': 'playerstats',
+        'getUserStatsForGame': 'playerstats',
+        'getOwnedGames': 'response',
+        'getRecentlyPlayedGames': 'response'
+    };
 
-    switch (method) {
-        case 'getNewsForApp':
-            if (specificData) {
-                dataEndpoint = 'appnews.' + specificData;
-            } else {
-                dataEndpoint = 'appnews'
-            }
-            break;
-        case 'getGlobalAchievementPercentagesForApp':
-            if (specificData) {
-                dataEndpoint = 'achievementpercentages.' + specificData;
-            } else {
-                dataEndpoint = 'achievementpercentages';
-            }
-            break;
-        case 'getPlayerSummaries':
-            if (specificData) {
-                dataEndpoint = 'response.' + specificData;
-            } else {
-                dataEndpoint = 'response';
-            }
-            break;
-        case 'getFriendList':
-            if (specificData) {
-                dataEndpoint = 'friendslist.' + specificData;
-            } else {
-                dataEndpoint = 'friendslist';
-            }
-            break;
-        case 'getPlayerAchievements':
-            if (specificData) {
-                dataEndpoint = 'playerstats.' + specificData;
-            } else {
-                dataEndpoint = 'playerstats';
-            }
-            break;
-        case 'getUserStatsForGame':
-            if (specificData) {
-                dataEndpoint = 'playerstats.' + specificData;
-                console.log(dataEndpoint);
-            } else {
-                dataEndpoint = 'playerstats';
-            }
-            break;
-        case 'getOwnedGames':
-            if (specificData) {
-                dataEndpoint = 'response.' + specificData;
-            } else {
-                dataEndpoint = 'response';
-            }
-            break;
-        case 'getRecentlyPlayedGames':
-            if (specificData) {
-                dataEndpoint = 'response.' + specificData;
-            } else {
-                dataEndpoint = 'response';
-            }
-            break;
-        default:
-            console.error("Invalid method: ", method);
-            return null;
+    let dataEndpoint = endpointMapping[method];
+
+    if (!dataEndpoint) {
+        console.error("Invalid method: ", method);
+        return null;
+    }
+
+    if (specificData) {
+        dataEndpoint += specificData;
     }
 
     if (format === 'json' || format === '') {
