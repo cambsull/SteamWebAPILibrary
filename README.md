@@ -296,7 +296,7 @@ async function myFunc() {
         maxlength: '500' // Return up to a maximum of 500 characters per result
 });
 
-// Do something with the result
+    // Do something with the result
 }
 
 myFunc();
