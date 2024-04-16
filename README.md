@@ -2,7 +2,7 @@
 
 ## Version
 
-Steam Web API Library is currently in version 0.2.0 per the [Semantic Versioning standards](https://semver.org).
+Steam Web API Library is currently in version 0.4.0 per the [Semantic Versioning standards](https://semver.org).
 
 Enhancements, features, and known issues are available in the [Issues](https://github.com/cambsull/SteamWebAPILibrary/issues) and [Projects](https://github.com/users/cambsull/projects/3) section of this respository.
 
@@ -37,66 +37,51 @@ Steam Web API Library is easy to install and use:
 
 ## 2.0 | Usage and Functionality
 
+## **NOTE**: Methods that request information from specific Steam users require that the user profiles be set to "public" visibility. Otherwise the server will return an undefined object.
 
-### 2.1 | Option one (recommended) -- passing arguments as a destructured object
+### 2.1 | Option one (recommended) -- passing arguments as a destructured object in the async function.
 
 Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
-
-When using this method, you may place your arguments in any order you wish in your destructured object, and it will be easier to see which arguments are being passed.
 
 ```js
 import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, appid, format}) {
+async function myFunc(){
 
-    const result = await myAppVariable.getPlayerAchievements(steamid, appid, format);
-    // Do something with the result
+    const result = await myAppVariable.getNewsForApp({
+        appid: '440', 
+        count: '4',
+        format: 'json',
+        maxlength: '500'});
+
+    return result; 
 }
 
-myFunc({
-    steamid: '76561197960434622', // Returns data about this Steam profile
-    appid: '413150', // Returns data about the app 413150 (Stardew Valley)
-    format: 'json', // Returns data in JSON format
-});
+myFunc();
+
 ```
 
 Parameters that have a default value will maintain their default value whether or not they are included in your destructured object.
 
-```js
-const myAppVariable = new CallSteamAPI();
+### 2.2 | Option two -- passing arguments in your function call directly.
 
-async function myFunc({appid, count, maxlength}) {
-
-    const result = await myAppVariable.getNewsForApp(myAppId, myCount, myMaxLength);
-    //Do something with the result
-}
-
-myFunc({
-    appid: '440', // Returns the default 3 articles of news, with the default 300 characters, for appid 440.
-});
-```
-
-### 2.2 | Option two -- passing arguments directly
-
-Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code.
-
-This has the disadvantage of being less clear which arguments you are passing for which parameters, and you must maintain the same order of arguments as defined by the
-methods.
+Create an async function and call the library method you wish to use, then call the function as needed in your synchronous code. Arguments passed must match parameter order.
 
 ```js
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc() {
+async function myFunc(appid, count, maxlength, format){
 
-  const result = await myAppVariable.getNewsForApp('440', '4', '400')
-  //Do something with the result
+    const result = await myAppVariable.getNewsForApp({appid, count, maxlength, format});
+
+    return result; 
 }
 
-myFunc()
-
-//Returns up to four articles of news, each up to 400 characters, for the selected appid, 440.
+myFunc('440', '5', '500', 'json');
 ```
 
 ### 2.3 | Querying for specific data endpoints
@@ -113,18 +98,16 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, appid, format, specificData}) {
+async function myFunc(){
 
-    const result = await myAppVariable.getPlayerAchievements(steamid, appid, format, specificData);
-    // Do something with the result
+    const result = await myAppVariable.getPlayerAchievements({
+        appid: '440',
+        steamid: '01234567890123456',
+        specificData: 'gameName' //Returns only the "gameName" field for the specified user and app
+        });
+        
+    return result; 
 }
-
-myFunc({
-    steamid: '76561197960434622', // Returns data about this Steam profile
-    appid: '413150', // Returns data about the app 413150 (Stardew Valley)
-    format: 'json', // Returns data in JSON format
-    specificData: 'achievements' // Returns the achievement field specifically from the data endpoint
-});
 ```
 
 ## 3.0 | Parameter Definitions
@@ -305,18 +288,18 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({appid, count, maxlength, format}){
+async function myFunc() {
 
-    const result = await myAppVariable.getNewsForApp(appid, count, maxlength, format);
+    const result = await myAppVariable.getNewsForApp({
+        appid: '413150', // Return info for the app "Stardew Valley"
+        count: '10', // Return up to 10 results, if available
+        maxlength: '500' // Return up to a maximum of 500 characters per result
+});
+
     // Do something with the result
 }
 
-myFunc({
-    appid: '413150', // Return info for the app "Stardew Valley"
-    format: 'xml', // Return in xml format
-    count: '10', // Return up to 10 results, if available
-    maxlength: '500' // Return up to a maximum of 500 characters per result
-});
+myFunc();
 ```
 
  ### 5.2 | getGlobalAchievementPercentagesForApp
@@ -332,20 +315,20 @@ myFunc({
  **Example**:
 
  ```js
- import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({appid, format}){
+async function myFunc() {
 
-    const result = await myAppVariable.getGlobalAchievementPercentagesForApp(appid, format);
+    const result = await myAppVariable.getGlobalAchievementPercentagesForApp({
+        gameid: '413150' // Returns data for the game Stardew Valley
+    });
+
     // Do something with the result
 }
 
-myFunc({
-    appid: '413150', // Return info for the app "Stardew Valley"
-    format: 'vdf' // Return in Valve Data Format
-});
+myFunc();
 ```
 
  ### 5.3 | getPlayerSummaries 
@@ -361,20 +344,20 @@ myFunc({
  **Example**:
 
  ```js
- import CallSteamAPI from "./src/SteamWebAPILibrary.js";
+import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamids, format}){
+async function myFunc(){
 
-    const result = await myAppVariable.getPlayerSummaries(steamids);
+    const result = await myAppVariable.getPlayerSummaries({
+        steamids: '76561197960435530, 76561197960435531, 76561197960435532, 76561197960435533', // Return info for the specified Steam IDs
+    });
+
     // Do something with the result
 }
 
-myFunc({
-    steamids: '76561197960435530, 76561197960435531, 76561197960435532, 76561197960435533', // Return info for the specified Steam IDs
-    format: 'json' // Return in JSON format (redundant, enabled by default and can be omitted)
-});
+myFunc();
 ```
  
  ### 5.4 | getFriendList
@@ -396,19 +379,18 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, relationship}){
+async function myFunc(){
 
-    const result = await myAppVariable.getFriendList(steamid, relationship);
+    const result = await myAppVariable.getFriendList({
+        steamid: '01234567890123456', // Return info for the specified Steam ID
+        relationship: 'all', // Return all relationship data for the specified Steam ID
+    });
+
     // Do something with the result
 }
 
-myFunc({
-    steamid: '76561197960435530', // Return info for the specified Steam ID
-    relationship: 'all', // Return all relationship data for the specified Steam ID
-});
+myFunc();
 ```
-
- (Note: this particular example uses the profile ID found in the official documentation, which is current set to private.)
 
 ### 5.5 | getPlayerAchievements
 
@@ -429,16 +411,17 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, appid, format}){
+async function myFunc(){
 
-    const result = await myAppVariable.getPlayerAchievements(steamid, appid, format);
+    const result = await myAppVariable.getPlayerAchievements({
+        steamid: '0123456789123456', // Return info for the specified Steam ID
+        appid: '440', // Return all relationship data for the app Team Fortress 2
+    });
+
     // Do something with the result
 }
 
-myFunc({
-    steamid: '76561197960435530', // Return info for the specified Steam ID
-    appid: '440', // Return all relationship data for the app "Team Fortress 2"
-});
+myFunc();
 ```
 
 ### 5.6 | getUserStatsForGame
@@ -458,17 +441,17 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, appid}){
+async function myFunc(){
 
-    const result = await myAppVariable.getUserStatsForGame(steamid, appid);
+    const result = await myAppVariable.getUserStatsForGame({
+        steamid: '01234567890123456', // Return info for the specified Steam ID
+        appid: '440', // Return all relationship data for the app "Team Fortress 2"
+    });
+
     // Do something with the result
-
 }
 
-myFunc({
-    steamid: '76561197960435530', // Return info for the specified Steam ID
-    appid: '440', // Return all relationship data for the app "Team Fortress 2"
-});
+myFunc();
 ```
 
 ### 5.7 | getOwnedGames
@@ -490,19 +473,19 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, format, specificData, includeAppInfo, includePlayedFreeGames}){
+async function myFunc(){
 
-    const result = await myAppVariable.getOwnedGames(steamid, format, specificData, includeAppInfo, includePlayedFreeGames);
+    const result = await myAppVariable.getOwnedGames({
+        steamid: '01234567890123456', // Return data for the specified Steam ID
+        specificData: 'games', // Return the specific games object inside of the primary returned object
+        includeAppInfo: false, // Disable additional app info, which is enabled by default.
+        includePlayedFreeGames: false // Disable including played free games, which is enabled by default.
+    });
+
     // Do something with the result
 }
 
-myFunc({
-    steamid: '0123456789', // Return data for the specified Steam ID
-    format: 'json', // Return in JSON format
-    specificData: 'games', // Return the specific games object inside of the primary returned object
-    includeAppInfo: false, // Disable additional app info, which is enabled by default.
-    includePlayedFreeGames: false // Disable including played free games, which is enabled by default.
-});
+myFunc();
 ```
 
 ### 5.8 | getRecentlyPlayedGames
@@ -520,15 +503,15 @@ import CallSteamAPI from "./src/SteamWebAPILibrary.js";
 
 const myAppVariable = new CallSteamAPI();
 
-async function myFunc({steamid, format, count}){
+async function myFunc(){
 
-    const result = await myAppVariable.getRecentlyPlayedGames(steamid, format, count);
+    const result = await myAppVariable.getRecentlyPlayedGames({
+        steamid: '01234567890123456', // Return info for the specified Steam ID
+        count: '3', // Return up to 3 most recently played games
+    });
+    
     // Do something with the result
 }
 
-myFunc({
-    steamid: '0123456789', // Return info for the specified Steam ID
-    count: '3', // Return up to 3 most recently played games
-    format: 'xml' // Return in XML format
-});
+myFunc();
 ```
