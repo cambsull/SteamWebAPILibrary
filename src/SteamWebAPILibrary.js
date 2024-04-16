@@ -1,72 +1,28 @@
 import 'dotenv/config';
-import { hasUncaughtExceptionCaptureCallback } from 'process';
 
 async function handleEndpointOrFormat(format, url, method, specificData) {
     //DRY template for handling if a specific format or data endpoint is specified
 
-    let dataEndpoint = '';
+    const endpointMapping = {
+        'getNewsForApp': 'appnews',
+        'getGlobalAchievementPercentagesForApp': 'achievementpercentages',
+        'getPlayerSummaries': 'response',
+        'getFriendList': 'friendslist',
+        'getPlayerAchievements': 'playerstats',
+        'getUserStatsForGame': 'playerstats',
+        'getOwnedGames': 'response',
+        'getRecentlyPlayedGames': 'response'
+    };
 
-    switch (method) {
-        case 'getNewsForApp':
-            if (specificData) {
-                dataEndpoint = 'appnews.' + specificData;
-            } else {
-                dataEndpoint = 'appnews'
-            }
-            break;
-        case 'getGlobalAchievementPercentagesForApp':
-            if (specificData) {
-                dataEndpoint = 'achievementpercentages.' + specificData;
-            } else {
-                dataEndpoint = 'achievementpercentages';
-            }
-            break;
-        case 'getPlayerSummaries':
-            if (specificData) {
-                dataEndpoint = 'response.' + specificData;
-            } else {
-                dataEndpoint = 'response';
-            }
-            break;
-        case 'getFriendList':
-            if (specificData) {
-                dataEndpoint = 'friendslist.' + specificData;
-            } else {
-                dataEndpoint = 'friendslist';
-            }
-            break;
-        case 'getPlayerAchievements':
-            if (specificData) {
-                dataEndpoint = 'playerstats.' + specificData;
-            } else {
-                dataEndpoint = 'playerstats';
-            }
-            break;
-        case 'getUserStatsForGame':
-            if (specificData) {
-                dataEndpoint = 'playerstats.' + specificData;
-                console.log(dataEndpoint);
-            } else {
-                dataEndpoint = 'playerstats';
-            }
-            break;
-        case 'getOwnedGames':
-            if (specificData) {
-                dataEndpoint = 'response.' + specificData;
-            } else {
-                dataEndpoint = 'response';
-            }
-            break;
-        case 'getRecentlyPlayedGames':
-            if (specificData) {
-                dataEndpoint = 'response.' + specificData;
-            } else {
-                dataEndpoint = 'response';
-            }
-            break;
-        default:
-            console.error("Invalid method: ", method);
-            return null;
+    let dataEndpoint = endpointMapping[method];
+
+    if (!dataEndpoint) {
+        console.error("Invalid method: ", method);
+        return null;
+    }
+
+    if (specificData) {
+        dataEndpoint += `.${specificData}`;
     }
 
     if (format === 'json' || format === '') {
@@ -86,26 +42,27 @@ async function handleEndpointOrFormat(format, url, method, specificData) {
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`The server returned an error: ${response.status}`);
+                throw new Error(`Error fetching XML-- response code: ${response.status}`)
             }
             const xml = await response.text();
             return xml;
         } catch (error) {
-            console.error(`The server returned an error: ${response.status}`);
+            console.error(`\n An error occurred, exiting. \n\n`, error);
             return null;
         }
-    } else if (format === 'vdf') try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Error fetching VDF: ${response.status}`);
-        }
-        const vdf = await response.text();
-        return vdf;
-    } catch (error) {
-        console.error('Error fetching VDF: ', error);
-        return null;
-    } else {
-        console.error(`An unknown format was specified. Format is an optional parameter and is a JSON object by default.`)
+    } else if (format === 'vdf')
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Error fetching VDF-- response code:  ${response.status}`);
+            }
+            const vdf = await response.text();
+            return vdf;
+        } catch (error) {
+            console.error(`\n An error occurred, exiting. \n\n`, error);
+            return null;
+        } else {
+        console.error(`An unknown or invalid format was specified\n`)
         return null;
     }
 }
@@ -132,7 +89,7 @@ class CallSteamAPI {
 
     //Format should be truthy in each method by default, but if for some reason handleEndpointOrFormat doesn't execute, methods will at least return a default JSON object
 
-    async getNewsForApp(appid, count = 3, maxlength = 300, format = 'json', specificData) {
+    async getNewsForApp({appid, count = 3, maxlength = 300, format = 'json', specificData}) {
         const endpoint = `/ISteamNews/GetNewsForApp/v0002/`;
         const query = `?appid=${appid}&count=${count}&maxlength=${maxlength}&format=${format}`;
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
@@ -150,7 +107,7 @@ class CallSteamAPI {
             }
         }
     }
-    async getGlobalAchievementPercentagesForApp(gameid, format = 'json', specificData) {
+    async getGlobalAchievementPercentagesForApp({gameid, format = 'json', specificData}) {
         const endpoint = `/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v002/`;
         const query = `?gameid=${gameid}&format=${format}`;
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
@@ -168,7 +125,7 @@ class CallSteamAPI {
             }
         }
     }
-    async getPlayerSummaries(steamids, format = 'json', specificData) {
+    async getPlayerSummaries({steamids, format = 'json', specificData}) {
         const endpoint = `/ISteamUser/GetPlayerSummaries/v0002/`;
         const query = `?key=${this.key}&steamids=${steamids}&format=${format}`
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
@@ -186,7 +143,7 @@ class CallSteamAPI {
             }
         }
     }
-    async getFriendList(steamid, relationship = `friend`, format = 'json', specificData) {
+    async getFriendList({steamid, relationship = `friend`, format = 'json', specificData}) {
         const endpoint = `/ISteamUser/GetFriendList/v0001/`;
         const query = `?key=${this.key}&steamid=${steamid}&relationship=${relationship}&format=${format}`
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
@@ -204,7 +161,7 @@ class CallSteamAPI {
             }
         }
     }
-    async getPlayerAchievements(steamid, appid, format = 'json', specificData) {
+    async getPlayerAchievements({steamid, appid, format = 'json', specificData}) {
         const endpoint = `/ISteamUserStats/GetPlayerAchievements/v0001/`;
         const query = `?appid=${appid}&key=${this.key}&steamid=${steamid}&format=${format}`;
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
@@ -222,7 +179,7 @@ class CallSteamAPI {
             }
         }
     }
-    async getUserStatsForGame(steamid, appid, format = 'json', specificData) {
+    async getUserStatsForGame({steamid, appid, format = 'json', specificData}) {
         const endpoint = `/ISteamUserStats/GetUserStatsForGame/v0002/`;
         const query = `?appid=${appid}&key=${this.key}&steamid=${steamid}&format=${format}`;
         const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
@@ -240,7 +197,7 @@ class CallSteamAPI {
             }
         }
     }
-    async getOwnedGames(steamid, format = 'json', specificData, includeAppInfo = true, includePlayedFreeGames = true) {
+    async getOwnedGames({steamid, format = 'json', specificData, includeAppInfo = true, includePlayedFreeGames = true}) {
         const includeAppInfoParam = includeAppInfo ? `&include_appinfo=true` : '';
         const includePlayedFreeGamesParam = includePlayedFreeGames ? `&include_played_free_games=true` : '';
 
@@ -261,7 +218,7 @@ class CallSteamAPI {
             }
         }
     }
-    async getRecentlyPlayedGames(steamid, format, count = null, specificData) {
+    async getRecentlyPlayedGames({steamid, format, count = null, specificData}) {
         const countParam = count ? `&count=${count}` : '';
 
         const endpoint = `/IPlayerService/GetRecentlyPlayedGames/v0001/`;
