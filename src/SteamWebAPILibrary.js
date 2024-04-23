@@ -232,7 +232,7 @@ class CallSteamAPI {
     if (format || specificData) {
       return handleEndpointOrFormat(format, url, 'getRecentlyPlayedGames', specificData);
     }
-    
+
     try {
       const response = await fetch(url);
       const data = await response.json();
