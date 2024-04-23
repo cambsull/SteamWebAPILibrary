@@ -88,8 +88,6 @@ class CallSteamAPI {
         }
     }
 
-    //Format should be truthy in each method by default, but if for some reason handleEndpointOrFormat doesn't execute, methods will at least return a default JSON object
-
     async getNewsForApp({ appid, count = 3, maxlength = 300, format = 'json', specificData }) {
         const endpoint = `/ISteamNews/GetNewsForApp/v0002/`;
         const query = `?appid=${appid}&count=${count}&maxlength=${maxlength}&format=${format}`;
