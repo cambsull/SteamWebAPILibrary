@@ -78,16 +78,19 @@ export async function handleEndpointOrFormat(
 
 class CallSteamAPI {
   static #baseURL = `http://api.steampowered.com`;
-  cache = new Map();
+  /**
+   * @constructor
+   * @returns {Object} - Steam Web API Library object
+   */
   constructor() {
     this.key = process.env.STEAM_KEY;
     try {
       const key = this.key;
-      if (!key && process.env.NODE_ENV !== "test") {
+      if (!key) {
         throw new Error("A Steam Web API key was not found.");
       }
       const keyRegex = /^[a-zA-Z0-9]{32}$/;
-      if (!keyRegex.test(key) && process.env.NODE_ENV !== "test") {
+      if (!keyRegex.test(key)) {
         throw new Error(
           "The Steam Web API key provided is invalid. It must be a 32-character alphanumeric string with no special characters."
         );
@@ -99,37 +102,28 @@ class CallSteamAPI {
       return null;
     }
   }
-
+  /**
+   *
+   * @param {String} appid - App instance ID
+   * @param {Number} count - Number of news items to retrieve
+   * @param {Number} maxlength - Maximum length of each news item
+   * @param {String} format - Format of the data to return
+   * @param {String} specificData - Specific data to return from the response
+   * @returns {String} - JSON, XML, or VDF data
+   */
   async getNewsForApp({
     appid,
     count = 3,
     maxlength = 300,
     format = "json",
     specificData,
-    useCache = true,
   }) {
-    const hashKey = `${appid}-${count}-${maxlength}-${format}`;
-
     const endpoint = `/ISteamNews/GetNewsForApp/v0002/`;
     const query = `?appid=${appid}&count=${count}&maxlength=${maxlength}&format=${format}`;
     const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
     try {
-      if (!useCache) {
-        return handleEndpointOrFormat(
-          format,
-          url,
-          "getNewsForApp",
-          specificData
-        );
-      }
-      return this.#cachedFetch(
-        hashKey,
-        format,
-        url,
-        "getNewsForApp",
-        specificData
-      );
+      return handleEndpointOrFormat(format, url, "getNewsForApp", specificData);
     } catch (error) {
       console.error(
         `There was a problem instantiating the Steam Web API Library object: \n\n${error}\n`
