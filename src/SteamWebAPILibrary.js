@@ -1,12 +1,11 @@
 import "dotenv/config";
-/**
- * @param {('json'|'')} format The format of the data.
- * @param {string} url The URL to fetch data from.
- * @param {('getNewsForApp'|'getGlobalAchievementPercentagesForApp'|'getPlayerSummaries'|'getFriendList'|'getPlayerAchievements'|'getUserStatsForGame'|'getOwnedGames'|'getRecentlyPlayedGames')} method The method to use.
- * @param {string} specificData Specific data to append to the endpoint.
- * @returns {Promise<any>} The fetched data.
- */
-async function handleEndpointOrFormat(format, url, method, specificData) {
+
+export async function handleEndpointOrFormat(
+  format,
+  url,
+  method,
+  specificData
+) {
   //DRY template for handling if a specific format or data endpoint is specified
 
   const endpointMapping = {
@@ -132,24 +131,30 @@ class CallSteamAPI {
       return null;
     }
   }
-  /**
-   *
-   * @param {Number} gameid - Game instance ID
-   * @param {String} format - Format of the data to return
-   * @param {String} specificData - Specific data to return from the response
-   * @returns {String} - JSON, XML, or VDF data
-   */
   async getGlobalAchievementPercentagesForApp({
     gameid,
     format = "json",
     specificData,
+    useCache = true,
   }) {
+    const hashKey = `${gameid}`;
+
     const endpoint = `/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v002/`;
     const query = `?gameid=${gameid}&format=${format}`;
     const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
     try {
-      return handleEndpointOrFormat(
+      if (!useCache) {
+        return handleEndpointOrFormat(
+          format,
+          url,
+          "getGlobalAchievementPercentagesForApp",
+          specificData
+        );
+      }
+
+      return this.#cachedFetch(
+        hashKey,
         format,
         url,
         "getGlobalAchievementPercentagesForApp",
@@ -162,20 +167,28 @@ class CallSteamAPI {
       return null;
     }
   }
-  /**
-   *
-   * @param {Number} steamids - Comma-separated list of Steam IDs
-   * @param {String} format - Format of the data to return
-   * @param {String} specificData - Specific data to return from the response
-   * @returns {String} - JSON, XML, or VDF data
-   */
-  async getPlayerSummaries({ steamids, format = "json", specificData }) {
+  async getPlayerSummaries({
+    steamids,
+    format = "json",
+    specificData,
+    useCache = true,
+  }) {
+    const hashKey = `${steamids}-${format}`;
     const endpoint = `/ISteamUser/GetPlayerSummaries/v0002/`;
     const query = `?key=${this.key}&steamids=${steamids}&format=${format}`;
     const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
     try {
-      return handleEndpointOrFormat(
+      if (!useCache) {
+        return handleEndpointOrFormat(
+          format,
+          url,
+          "getPlayerSummaries",
+          specificData
+        );
+      }
+      return this.#cachedFetch(
+        hashKey,
         format,
         url,
         "getPlayerSummaries",
@@ -188,26 +201,33 @@ class CallSteamAPI {
       return null;
     }
   }
-  /**
-   *
-   * @param {Number} steamid - Steam ID of the user
-   * @param {String} relationship - Relationship type to retrieve
-   * @param {String} format - Format of the data to return
-   * @param {String} specificData - Specific data to return from the response
-   * @returns {String} - JSON, XML, or VDF data
-   */
   async getFriendList({
     steamid,
     relationship = `friend`,
     format = "json",
     specificData,
+    useCache = true,
   }) {
+    const hashKey = `${steamid}-${relationship}-${format}`;
     const endpoint = `/ISteamUser/GetFriendList/v0001/`;
     const query = `?key=${this.key}&steamid=${steamid}&relationship=${relationship}&format=${format}`;
     const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
-
     try {
-      return handleEndpointOrFormat(format, url, "getFriendList", specificData);
+      if (!useCache) {
+        return handleEndpointOrFormat(
+          format,
+          url,
+          "getFriendList",
+          specificData
+        );
+      }
+      return this.#cachedFetch(
+        hashKey,
+        format,
+        url,
+        "getFriendList",
+        specificData
+      );
     } catch (error) {
       console.error(
         `There was a problem instantiating the Steam Web API Library object: \n\n${error}\n`
@@ -215,26 +235,29 @@ class CallSteamAPI {
       return null;
     }
   }
-  /**
-   *
-   * @param {Number} steamid - Steam ID of the user
-   * @param {Number} appid - App instance ID
-   * @param {String} format - Format of the data to return
-   * @param {String} specificData - Specific data to return from the response
-   * @returns {String} - JSON, XML, or VDF data
-   */
   async getPlayerAchievements({
     steamid,
     appid,
     format = "json",
     specificData,
+    useCache = true,
   }) {
+    const hashKey = `${steamid}-${appid}-${format}`;
     const endpoint = `/ISteamUserStats/GetPlayerAchievements/v0001/`;
     const query = `?appid=${appid}&key=${this.key}&steamid=${steamid}&format=${format}`;
     const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
     try {
-      return handleEndpointOrFormat(
+      if (!useCache) {
+        return handleEndpointOrFormat(
+          format,
+          url,
+          "getPlayerAchievements",
+          specificData
+        );
+      }
+      return this.#cachedFetch(
+        hashKey,
         format,
         url,
         "getPlayerAchievements",
@@ -247,21 +270,29 @@ class CallSteamAPI {
       return null;
     }
   }
-  /**
-   *
-   * @param {Number} steamid - Steam ID of the user
-   * @param {Number} appid - App instance ID
-   * @param {String} format - Format of the data to return
-   * @param {String} specificData - Specific data to return from the response
-   * @returns {String} - JSON, XML, or VDF data
-   */
-  async getUserStatsForGame({ steamid, appid, format = "json", specificData }) {
+  async getUserStatsForGame({
+    steamid,
+    appid,
+    format = "json",
+    specificData,
+    useCache = true,
+  }) {
+    const hashKey = `${steamid}-${appid}-${format}`;
     const endpoint = `/ISteamUserStats/GetUserStatsForGame/v0002/`;
     const query = `?appid=${appid}&key=${this.key}&steamid=${steamid}&format=${format}`;
     const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
     try {
-      return handleEndpointOrFormat(
+      if (!useCache) {
+        return handleEndpointOrFormat(
+          format,
+          url,
+          "getUserStatsForGame",
+          specificData
+        );
+      }
+      return this.#cachedFetch(
+        hashKey,
         format,
         url,
         "getUserStatsForGame",
@@ -274,22 +305,15 @@ class CallSteamAPI {
       return null;
     }
   }
-  /**
-   *
-   * @param {Number} steamid - Steam ID of the user
-   * @param {String} format - Format of the data to return
-   * @param {String} specificData - Specific data to return from the response
-   * @param {Boolean} includeAppInfo - Include app information in the response
-   * @param {Boolean} includePlayedFreeGames - Include played free games in the response
-   * @returns {String} - JSON, XML, or VDF data
-   */
   async getOwnedGames({
     steamid,
     format = "json",
     specificData,
     includeAppInfo = true,
     includePlayedFreeGames = true,
+    useCache = true,
   }) {
+    const hashKey = `${steamid}-${format}`;
     const includeAppInfoParam = includeAppInfo ? `&include_appinfo=true` : "";
     const includePlayedFreeGamesParam = includePlayedFreeGames
       ? `&include_played_free_games=true`
@@ -300,7 +324,21 @@ class CallSteamAPI {
     const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
     try {
-      return handleEndpointOrFormat(format, url, "getOwnedGames", specificData);
+      if (!useCache) {
+        return handleEndpointOrFormat(
+          format,
+          url,
+          "getOwnedGames",
+          specificData
+        );
+      }
+      return this.#cachedFetch(
+        hashKey,
+        format,
+        url,
+        "getOwnedGames",
+        specificData
+      );
     } catch (error) {
       console.error(
         `There was a problem instantiating the Steam Web API Library object: \n\n${error}\n`
@@ -308,28 +346,30 @@ class CallSteamAPI {
       return null;
     }
   }
-  /**
-   *
-   * @param {Number} steamid - Steam ID of the user
-   * @param {String} format - Format of the data to return
-   * @param {String} specificData - Specific data to return from the response
-   * @param {Number} count - Number of games to retrieve
-   * @returns {String} - JSON, XML, or VDF data
-   */
   async getRecentlyPlayedGames({
     steamid,
     format,
     count = null,
     specificData,
+    useCache = true,
   }) {
     const countParam = count ? `&count=${count}` : "";
-
+    const hashKey = `${steamid}-${count}-${format}`;
     const endpoint = `/IPlayerService/GetRecentlyPlayedGames/v0001/`;
     const query = `?key=${this.key}&steamid=${steamid}${countParam}&format=${format}`;
     const url = `${CallSteamAPI.#baseURL}` + endpoint + query;
 
     try {
-      return handleEndpointOrFormat(
+      if (!useCache) {
+        return handleEndpointOrFormat(
+          format,
+          url,
+          "getRecentlyPlayedGames",
+          specificData
+        );
+      }
+      return this.#cachedFetch(
+        hashKey,
         format,
         url,
         "getRecentlyPlayedGames",
@@ -342,6 +382,15 @@ class CallSteamAPI {
       return null;
     }
   }
-}
 
+  async #cachedFetch(cacheKey, ...args) {
+    const cacheResult = this.cache.has(cacheKey);
+    if (this.cache.has(cacheKey) == true) {
+      return this.cache.get(cacheKey);
+    }
+    const response = await handleEndpointOrFormat(...args);
+    this.cache.set(cacheKey, response);
+    return response;
+  }
+}
 export default CallSteamAPI;
