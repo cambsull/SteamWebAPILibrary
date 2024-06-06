@@ -14,5 +14,7 @@
   },
   "jest": {
     "transform": {}
-  }
+  },
+  "name": "swalib",
+  "version": "0.4.0"
 }
