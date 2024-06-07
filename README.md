@@ -14,26 +14,18 @@ Steam Web API Library is a JavaScript library that makes it easier to query data
 
 Steam Web API Library is easy to install and use:
 
-1. Add SteamWebAPILibrary.js to your project directory.
+1. Run `npm i swalib` in your project root directory.
 
-2. Add these dependencies to your package.json file:
-
-```
- "dependencies": {
-    "dotenv": "^16.4.5",
-    "process": "^0.11.10"
-  }
-```
-
-3. Run `npm install` in your project root directory.
-
-4. Ensure that you have your Steam Web API key in a .env file in the root directory of your project. Refer to _example.env_ for naming requirements:
+2. Ensure that you have your Steam Web API key in a .env file in the root directory of your project. Refer to _example.env_ for naming requirements:
 
 `STEAM_KEY=XXXXXXXXXXXXXXXXXXXXXXX`
 
-5. Import Steam Web API Library into your project:
+*Note: a future update will allow you to specify where your .env file is located. For the time being, it must be in the root directory of your project.*
+
+3. Import Steam Web API Library into your project:
 
 `import CallSteamAPI from "./SteamWebAPILibrary.js";`
+
 
 ## 2.0 | Usage and Functionality
 
