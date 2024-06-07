@@ -2,7 +2,7 @@
 
 ## Version
 
-Steam Web API Library is currently in version 1.0.0 per the [Semantic Versioning standards](https://semver.org).
+Steam Web API Library is currently in version 1.0.1 per the [Semantic Versioning standards](https://semver.org).
 
 Enhancements, features, and known issues are available in the [Issues](https://github.com/cambsull/SteamWebAPILibrary/issues) and [Projects](https://github.com/users/cambsull/projects/3) section of this respository.
 
